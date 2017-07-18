@@ -1,19 +1,16 @@
 import axios from "axios";
+import api from "../common/js/api";
 
 export default {
     //获取商家信息
-    getSeller({commit}){
-        axios.get("/api/sellerData")
+    getCustomer({commit}){
+        axios.get(api.customerList)
             .then(function (res) {
-                commit("initSeller", res.data);
-            });
-    },
-
-    //获取商品列表
-    getGoods({commit}){
-        axios.get("/api/goodsData")
-            .then(function (res) {
-                commit("initGoods", res.data);
+                commit("initCustomer", res.data);
+            })
+            .catch(err => {
+                console.log("获取客户列表失败：");
+                console.log(err);
             });
     }
 }

@@ -13,8 +13,6 @@ let webpack = require('webpack');
 let proxyMiddleware = require('http-proxy-middleware');     //使用代理的中间件
 let webpackConfig = require('./webpack.dev.conf');
 
-let router = require("./dataServer");
-
 let port = process.env.PORT || config.dev.port;             //端口号
 let autoOpenBrowser = !!config.dev.autoOpenBrowser;         //是否自动打开浏览器
 let proxyTable = config.dev.proxyTable;                     //http代理的url
@@ -57,7 +55,7 @@ compiler.plugin('compilation', function (compilation) {
  });*/
 
 let proxy = proxyMiddleware({
-    target: "http://192.168.5.58"
+    target: "http://192.168.5.58:3001"
 });
 
 app.use("/api", proxy);

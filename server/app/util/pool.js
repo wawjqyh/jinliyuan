@@ -7,4 +7,22 @@ let mysqlConfig = require("../../config/config");
  */
 let pool = mysql.createPool(mysqlConfig.mysql);
 
-module.exports = pool;
+module.exports = function (sql) {
+    return new Promise((resolve, reject) => {
+        pool.getConnection(function (err, connection) {
+            if (err) {
+                reject(err);
+            }
+
+            connection.query(sql, function (err, res, fields) {
+                connection.release();
+
+                if (err) {
+                    reject();
+                }
+
+                resolve(res);
+            })
+        });
+    });
+};

@@ -1,36 +1,20 @@
 <template>
-    <div id="container">
-        <router-view></router-view>
-
-        <v-cart-list></v-cart-list>
-
-        <v-cart></v-cart>
-    </div>
+    <router-view></router-view>
 </template>
 
 <script>
-    import vCart from "./pages/common/cart/cart.vue";
-    import vCartList from "./pages/common/cartList/cartList.vue";
-
     import {mapActions} from "vuex";
 
     export default {
         name: "app",
+
         mounted(){
-            this.getGoods({});
-            this.getSeller({});
+            //获取客户列表
+            this.getCustomer({});
         },
-        components: {
-            vCart,
-            vCartList
-        },
-        data(){
-            return {
-                seller: {}
-            }
-        },
+
         methods: {
-            ...mapActions(["getGoods", "getSeller"])
+            ...mapActions(["getCustomer"])
         }
     }
 </script>
@@ -39,13 +23,5 @@
     @import "common/less/media";
     @import "common/less/reset";
     @import "common/less/animate";
-
-    .content {
-        box-sizing: border-box;
-        width: 100%;
-        top: 3.55rem;
-        left: 0;
-        bottom: 1rem;
-        position: absolute;
-    }
+    @import "common/font-awesome/css/font-awesome";
 </style>

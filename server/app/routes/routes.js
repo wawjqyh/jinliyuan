@@ -1,5 +1,6 @@
 const router = require('koa-router')();
-let pool = require("../util/pool");
+
+let customer = require("../controller/customer");
 
 router.get('/', async (ctx, next) => {
     /*await ctx.render('index', {
@@ -18,30 +19,8 @@ router.get('/json', async (ctx, next) => {
     }
 });
 
-async function mysqltest(ctx, next){
-    await new Promise((resolve, reject) => {
-        pool.getConnection(function (err, connection) {
-            if (err) {
-                reject();
-            }
 
-            connection.query("SELECT * FROM customer", function (err, res, fields) {
-                connection.release();
-
-                if (err) {
-                    reject();
-                }
-
-                console.log(res);
-
-                resolve();
-            })
-        });
-    });
-
-    ctx.body = "mysqltest";
-}
-
-router.get("/mysqltest", mysqltest);
+router.get("/api/customer", customer.list);                 //客户列表
+router.post("/api/customer/insert", customer.insert);       //新增客户
 
 module.exports = router;
