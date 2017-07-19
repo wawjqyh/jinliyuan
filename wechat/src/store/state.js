@@ -1,3 +1,5 @@
 export default {
-    customer: []
+    customer: [],
+    goods: [],
+    category: []
 }

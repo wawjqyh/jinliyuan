@@ -137,7 +137,7 @@
                 axios
                     .post(api.customerInsert, postData)
                     .then(res => {
-                        self.$router.push("/customer");
+                        self.$router.go(-1);
                     })
                     .catch(err => {
                         console.log(err);

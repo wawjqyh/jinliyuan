@@ -1,5 +1,5 @@
 <template>
-    <div class="customer">
+    <div class="selectCustomer" v-show="state">
         <div class="searchRow">
             <input type="text" placeholder="搜索" v-model="searchData">
             <span class="fa fa-search"></span>
@@ -14,24 +14,35 @@
                 <div class="address">
                     {{item.province}}-{{item.city}}-{{item.district}}
                 </div>
+
+                <label>
+                    <input type="radio" class="radio" name="customer" v-model="selected" :value="item.id">
+                </label>
             </li>
         </ul>
 
         <ul class="toolBtn">
             <router-link to="/customerAdd" tag="li">新增<br>客户</router-link>
         </ul>
+
+        <a href="javascript:void(0)" class="confirmBtn" @click="close">确定</a>
     </div>
 </template>
 
 <script>
     import axios from "axios";
-    import api from "../../common/js/api";
     import {mapState, mapActions} from "vuex";
 
     export default {
+        props: {
+            state: {
+                default: false
+            }
+        },
         data(){
             return {
-                searchData: ""
+                searchData: "",
+                selected: ""
             }
         },
         mounted(){
@@ -66,20 +77,40 @@
             }
         },
         methods: {
-            ...mapActions(["getCustomer"])
+            ...mapActions(["getCustomer"]),
+
+            close(){
+                let self = this;
+
+                let selected = self.customerShows.filter(item => {
+                    return item.id === self.selected;
+                });
+
+                if (selected.length === 0) {
+                    alert("请选择客户");
+                    return;
+                }
+
+                self.$emit("selectCustomer", selected[0]);
+            }
         }
     }
 </script>
 
 <style lang="less">
-    .customer {
-        position: absolute;
+    @import "../../../common/less/common";
+
+    .selectCustomer {
+        position: fixed;
         width: 100%;
+        height: 100%;
+        box-sizing: border-box;
         top: 0;
         left: 0;
-        bottom: 0.9rem;
         overflow: auto;
-        padding-top: 0.8rem;
+        padding: 0.8rem 0;
+        z-index: 9999;
+        background-color: #fff;
 
         .searchRow {
             padding: 0.15rem 0.3rem;
@@ -119,7 +150,8 @@
 
             li {
                 border-bottom: 1px solid #eee;
-                padding: 0.2rem 0 0.1rem 0;
+                padding: 0.2rem 1rem 0.1rem 0;
+                position: relative;
             }
 
             .nameRow {
@@ -137,11 +169,47 @@
                 font-size: 0.24rem;
                 line-height: 0.5rem;
             }
+
+            label {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+            }
+
+            .radio {
+                position: absolute;
+                width: 0.3rem;
+                height: 0.3rem;
+                -webkit-appearance: none;
+                border: 2px solid @mainColor;
+                border-radius: 50%;
+                top: 0.4rem;
+                right: 0;
+                outline: none;
+            }
+
+            .radio:checked {
+                background-color: @mainColor;
+            }
+        }
+
+        .confirmBtn {
+            position: absolute;
+            width: 100%;
+            height: 0.8rem;
+            left: 0;
+            bottom: 0;
+            background-color: @mainColor;
+            line-height: 0.8rem;
+            color: #fff;
+            text-align: center;
         }
 
         .toolBtn {
             position: absolute;
-            bottom: 0.3rem;
+            bottom: 1rem;
             right: 0.3rem;
 
             li {
