@@ -18,6 +18,12 @@ export default {
     getGoods({commit}){
         axios.get(api.goodsList)
             .then(res => {
+                res.data.forEach(item => {
+                    item.sNum = 0;
+                    item.show = true;
+                    item.price = 0;
+                });
+
                 commit("initGoods", res.data);
             })
             .catch(err => {

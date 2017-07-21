@@ -1,34 +1,26 @@
 <template>
     <div class="goods">
+
+        <!--搜索栏-->
         <div class="searchRow">
             <input type="text" placeholder="搜索" v-model="searchData">
             <span class="fa fa-search"></span>
         </div>
 
-        <div class="listTitle">
-            <span>型号</span>
-            <span>颜色</span>
-            <span>类型</span>
-            <span>库存</span>
-        </div>
-
+        <!--商品列表-->
         <ul class="goodsList">
             <li v-for="item in goodsShows">
-                <span>{{item.name}}</span>
-                <span>{{item.color}}</span>
-                <span>{{item.category}}</span>
-                <span>{{item.num}}</span>
+                <span class="goodsName">{{item.name}}</span>
+                <span class="goodsType">{{item.category}}</span>
+                <span class="goodsColor">{{item.color}}</span>
+                <span class="goodsNum">库存:{{item.num}}</span>
             </li>
-        </ul>
-
-        <ul class="toolBtn">
-            <router-link to="/orderAdd" tag="li">开单</router-link>
         </ul>
     </div>
 </template>
 
 <script>
-    import {mapState} from "vuex";
+    import {mapState, mapActions} from "vuex";
 
     export default {
         data(){
@@ -36,9 +28,13 @@
                 searchData: ""
             }
         },
+        mounted(){
+            this.getGoods({});      //获取商品列表
+        },
         computed: {
-            ...mapState(["goods", "category"]),
+            ...mapState(["goods"]),
 
+            //展示在列表中的商品，即符合搜索条件的商品
             goodsShows(){
                 let self = this;
 
@@ -51,6 +47,9 @@
                     return reg.test(item.name) || reg.test(item.color) || reg.test(item.category);
                 });
             }
+        },
+        methods: {
+            ...mapActions(["getGoods"])
         }
     }
 </script>
@@ -63,7 +62,7 @@
         left: 0;
         bottom: 0.9rem;
         overflow: auto;
-        padding-top: 1.4rem;
+        padding-top: 0.8rem;
 
         .searchRow {
             padding: 0.15rem 0.3rem;
@@ -98,61 +97,45 @@
             }
         }
 
-        .listTitle {
-            position: absolute;
-            width: 100%;
-            height: 0.6rem;
-            top: 0.8rem;
-            left: 0;
-            line-height: 0.6rem;
-            display: flex;
-            flex-wrap: nowrap;
-            background-color: #fffbe6;
-
-            span {
-                flex-grow: 1;
-                width: 25%;
-                text-align: center;
-                color: #31bfcf;
-            }
-        }
-
         .goodsList {
-            li {
-                display: flex;
-                flex-wrap: nowrap;
-                height: 0.8rem;
-                line-height: 0.8rem;
+            padding: 0 0.2rem;
 
-                span {
-                    flex-grow: 1;
-                    width: 25%;
-                    text-align: center;
+            li {
+                border-bottom: 1px solid #eee;
+                height: 1rem;
+                line-height: 1rem;
+                position: relative;
+                padding-left: 1rem;
+
+                .goodsName {
+                    font-size: 0.4rem;
+                    position: absolute;
+                    height: 1rem;
+                    line-height: 1rem;
+                    width: 1rem;
+                    top: 0;
+                    left: 0;
+                }
+
+                .goodsNum {
+                    position: absolute;
+                    height: 1rem;
+                    line-height: 1rem;
+                    width: 1.5rem;
+                    top: 0;
+                    right: 0;
+                    color: #f00;
+                    font-size: 0.24rem;
+                }
+
+                .goodsType, .goodsColor {
+                    color: #999;
+                    font-size: 0.24rem;
                 }
             }
-            li:nth-child(2n) {
-                background-color: #f3f3f3;
-            }
-        }
 
-        .toolBtn {
-            position: absolute;
-            bottom: 0.3rem;
-            right: 0.3rem;
-
-            li {
-                width: 1rem;
-                height: 1rem;
-                color: #fff;
-                margin-bottom: 0.2rem;
-                background-color: #31bfcf;
-                border-radius: 50%;
-                font-size: 0.24rem;
-                text-align: center;
-                display: inline-flex;
-                justify-content: center;
-                align-items: center;
-                line-height: 0.3rem;
+            li:last-child {
+                border: none;
             }
         }
     }
