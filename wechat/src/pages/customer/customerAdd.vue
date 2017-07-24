@@ -129,9 +129,12 @@
                 let postData = {
                     username: self.username,
                     phone: self.phone,
-                    province: self.provinceId + "-" + provinceName,
-                    city: self.cityId + "-" + cityName,
-                    district: self.districtId + "-" + districtName
+                    province_id: self.provinceId,
+                    province: provinceName,
+                    city_id: self.cityId,
+                    city: cityName,
+                    district_id: self.districtId,
+                    district: districtName
                 };
 
                 axios

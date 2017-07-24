@@ -39,18 +39,7 @@
             this.getCustomer({});
         },
         computed: {
-            ...mapState({
-                customer(state){
-                    let customer = state.customer;
-
-                    return customer.map(item => {
-                        item.province = item.province.split("-")[1];
-                        item.city = item.city.split("-")[1];
-                        item.district = item.district.split("-")[1];
-                        return item;
-                    });
-                }
-            }),
+            ...mapState(["customer"]),
 
             customerShows(){
                 let self = this;

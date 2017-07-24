@@ -7,7 +7,7 @@ import vIndex from "../pages/index/index.vue";
 import vGoods from "../pages/goods/goods.vue";
 
 import vOrder from "../pages/order/order.vue";
-import vOrderAdd from "../pages/order/orderAdd/orderAdd.vue";
+import vOrderAdd from "../pages/order/orderAdd.vue";
 
 import vCustomer from "../pages/customer/customer.vue";
 import vCustomerAdd from "../pages/customer/customerAdd.vue";
