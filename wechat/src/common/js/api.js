@@ -5,5 +5,7 @@ export default {
     customerInsert: baseUrl + "/customer/insert",
 
     goodsList: baseUrl + "/goods",
-    goodsCategory: baseUrl + "/goods/category"
+    goodsCategory: baseUrl + "/goods/category",
+
+    orderInsert: baseUrl + "/order/new"
 }

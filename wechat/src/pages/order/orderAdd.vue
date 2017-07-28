@@ -31,6 +31,13 @@
                     <v-num v-model="item.sNum"></v-num>
                 </div>
             </div>
+
+            <div class="settlement">
+                <span class="fa fa-shopping-cart"></span>
+                <span class="totalNum" v-show="totalNum > 0">{{totalNum}}</span>
+                <span class="totalMoney">总计：￥{{totalMoney}}</span>
+                <a href="javascript:void(0)" class="submit" @click="submit">提交</a>
+            </div>
         </div>
 
         <!--选择客户弹框-->
@@ -189,13 +196,14 @@
                 }
             },
 
-            //购物车商品
+            //购物车商品，筛选数量大于0的商品
             cart(){
                 return this.goods.filter(item => {
                     return item.sNum > 0;
                 });
             },
 
+            //商品总数
             totalNum(){
                 let totalNum = 0;
 
@@ -204,6 +212,17 @@
                 });
 
                 return totalNum;
+            },
+
+            //总价
+            totalMoney(){
+                let totalMoney = 0;
+
+                this.cart.forEach(item => {
+                    totalMoney = totalMoney + (item.sNum * item.price);
+                });
+
+                return totalMoney;
             }
         },
 
@@ -214,6 +233,8 @@
         },
 
         methods: {
+            ...mapActions(["getCustomer"]),
+
             //ajax获取商品列表
             getGoods(){
                 let self = this;
@@ -247,11 +268,81 @@
                 let reg = new RegExp(self.goodsSearch, "g");
 
                 return reg.test(item.name) || reg.test(item.color) || reg.test(item.category);
+            },
+
+            //验证表单
+            validate(){
+                let self = this;
+
+                if (self.selectId === "") {
+                    alert("请选择客户");
+                    return false;
+                }
+
+                if (self.startTime.time === "") {
+                    alert("请选择送货日期");
+                    return false;
+                }
+
+                if (self.cart.length === 0) {
+                    alert("请选择商品");
+                    return false;
+                }
+
+                for (let i = 0; i < self.cart.length; i++) {
+                    if (self.cart[i].price === "") {
+                        alert("请输入单价");
+                        return false;
+                    }
+                }
+
+                return true;
+            },
+
+            //提交
+            submit(){
+                let self = this;
+
+                if (!self.validate()) {
+                    return;
+                }
+
+                let order_id = new Date().getTime();
+
+                let order = {
+                    order_id: order_id,
+                    customer_id: self.selectId,
+                    deliver_date: self.startTime.time
+                };
+
+                let goods = self.cart.map(item => {
+                    return {
+                        order_id: order_id,
+                        goods_id: item.id,
+                        num: item.sNum,
+                        price: item.price
+                    }
+                });
+
+                let data = {
+                    order: order,
+                    goods: goods
+                };
+
+                axios
+                    .post(api.orderInsert, data)
+                    .then(res => {
+                        console.log(res);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
             }
         },
 
         mounted(){
             this.getGoods();        //ajax获取商品列表
+            this.getCustomer({});   //更新store中的客户
         }
     }
 </script>
@@ -265,7 +356,7 @@
         height: 100%;
         overflow: auto;
         box-sizing: border-box;
-        padding-top: 0.8rem;
+        padding: 0.8rem 0 0.9rem 0;
         background-color: #eee;
 
         .baseMes {
@@ -384,6 +475,59 @@
 
         .goodsItem:last-child {
             border: none;
+        }
+
+        .settlement {
+            position: fixed;
+            width: 100%;
+            height: 0.9rem;
+            bottom: 0;
+            left: 0;
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+            overflow: hidden;
+
+            .fa-shopping-cart {
+                position: absolute;
+                height: 0.9rem;
+                line-height: 0.9rem;
+                color: @mainColor;
+                font-size: 0.6rem;
+                left: 0.3rem;
+            }
+
+            .totalNum {
+                font-size: 0.24rem;
+                padding: 0 0.1rem;
+                background-color: #f00;
+                border-radius: 0.2rem;
+                height: 0.34rem;
+                line-height: 0.34rem;
+                top: 0.1rem;
+                left: 0.65rem;
+                position: absolute;
+                color: #fff;
+            }
+
+            .totalMoney {
+                position: absolute;
+                line-height: 0.9rem;
+                font-size: 0.3rem;
+                color: #f00;
+                left: 1.6rem;
+            }
+
+            .submit {
+                position: absolute;
+                width: 2rem;
+                height: 0.9rem;
+                background-color: @mainColor;
+                color: #fff;
+                top: 0;
+                right: 0;
+                text-align: center;
+                line-height: 0.9rem;
+            }
         }
     }
 
@@ -699,7 +843,7 @@
 
             .selectedList {
                 padding: 0 0.2rem 0.5rem 0.2rem;
-                max-height: 3rem;
+                max-height: 4rem;
                 overflow: auto;
 
                 li {

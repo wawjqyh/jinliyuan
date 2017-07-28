@@ -14,14 +14,14 @@ main.list = async function (ctx, next) {
         ORDER BY category_id ASC, name ASC
     `;
 
-    ctx.body = await sql(sqlCon);
+    ctx.body = await sql.query(sqlCon);
 };
 
 /**
  * @desc 查找商品类型列表
  */
 main.category = async function (ctx, next) {
-    ctx.body = await sql("SELECT * FROM category");
+    ctx.body = await sql.query("SELECT * FROM category");
 };
 
 module.exports = main;
