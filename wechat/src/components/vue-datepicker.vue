@@ -2,7 +2,7 @@
     <div class="cov-vue-date">
         <div class="datepickbox">
             <input type="text" title="input date" class="cov-datepicker" readonly="readonly"
-                   :placeholder="option.placeholder" v-model="date.time" :required="required" @click="showCheck"
+                   :placeholder="option.placeholder" :value="value" :required="required" @click="showCheck"
                    @foucus="showCheck" :style="option.inputStyle ? option.inputStyle : {}"/>
         </div>
         <div class="datepicker-overlay" v-if="showInfo.check" @click="dismiss($event)"
@@ -92,10 +92,7 @@
     export default {
         props: {
             required: false,
-            date: {
-                type: Object,
-                required: true
-            },
+            value: "",
             option: {
                 type: Object,
                 default: function _default() {
@@ -452,14 +449,14 @@
                 this.showDay(this.checked.currentMoment);
             },
             showCheck: function showCheck() {
-                if (this.date.time === '') {
+                if (this.value === '') {
                     this.showDay();
                 } else {
                     if (this.option.type === 'day' || this.option.type === 'min') {
-                        this.checked.oldtime = this.date.time;
-                        this.showDay(this.date.time);
+                        this.checked.oldtime = this.value;
+                        this.showDay(this.value);
                     } else {
-                        this.selectedDays = JSON.parse(this.date.time);
+                        this.selectedDays = JSON.parse(this.value);
                         if (this.selectedDays.length) {
                             this.checked.oldtime = this.selectedDays[0];
                             this.showDay(this.selectedDays[0]);
@@ -504,12 +501,12 @@
                 if (this.option.type === 'day' || this.option.type === 'min') {
                     var ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day + ' ' + this.checked.hour + ':' + this.checked.min;
                     this.checked.currentMoment = (0, _moment2.default)(ctime, 'YYYY-MM-DD HH:mm');
-                    this.date.time = (0, _moment2.default)(this.checked.currentMoment).format(this.option.format);
+                    this.$emit("input",(0, _moment2.default)(this.checked.currentMoment).format(this.option.format));
                 } else {
-                    this.date.time = JSON.stringify(this.selectedDays);
+                    this.$emit("input",JSON.stringify(this.selectedDays));
                 }
                 this.showInfo.check = false;
-                this.$emit('change', this.date.time);
+                //this.$emit('change', this.date.time);
             },
             dismiss: function dismiss(evt) {
                 if (evt.target.className === 'datepicker-overlay') {

@@ -4,6 +4,7 @@ module.exports = {
         user: "root",
         password: "",
         database: "jinliyuan",
-        port: "3306"
+        port: "3306",
+        timezone:"08:00"
     }
 };

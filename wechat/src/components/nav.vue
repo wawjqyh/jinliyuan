@@ -50,6 +50,7 @@
         flex-wrap: nowrap;
         overflow: hidden;
         color: #999;
+        box-sizing: border-box;
 
         li {
             flex-grow: 1;

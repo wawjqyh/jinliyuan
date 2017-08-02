@@ -8,6 +8,7 @@ import vGoods from "../pages/goods/goods.vue";
 
 import vOrder from "../pages/order/order.vue";
 import vOrderAdd from "../pages/order/orderAdd.vue";
+import vOrderDetail from "../pages/order/orderDetail.vue";
 
 import vCustomer from "../pages/customer/customer.vue";
 import vCustomerAdd from "../pages/customer/customerAdd.vue";
@@ -53,6 +54,11 @@ export default new Router({
         {
             path: "/orderAdd",
             component: vOrderAdd
+        },
+
+        {
+            path: "/orderDetail/:order_id",
+            component: vOrderDetail
         }
     ]
 });

@@ -13,7 +13,7 @@
 
                 <div class="formRow">
                     <span class="itemName">送货时间 <b>*</b></span>
-                    <v-date-picker :date="startTime" :option="option"></v-date-picker>
+                    <v-date-picker v-model="date" :option="option"></v-date-picker>
                 </div>
             </div>
 
@@ -141,9 +141,7 @@
                 goodsSearch: "",                    //搜索商品输入框
                 goods: [],                          //商品列表
 
-                startTime: {
-                    time: ""
-                },
+                date: "",
                 option: {
                     type: "day",
                     week: ["一", "二", "三", "四", "五", "六", "日"],
@@ -279,7 +277,7 @@
                     return false;
                 }
 
-                if (self.startTime.time === "") {
+                if (self.date === "") {
                     alert("请选择送货日期");
                     return false;
                 }
@@ -307,12 +305,15 @@
                     return;
                 }
 
-                let order_id = new Date().getTime();
+                let now = new Date();
+                let order_id = now.getTime();
 
                 let order = {
                     order_id: order_id,
                     customer_id: self.selectId,
-                    deliver_date: self.startTime.time
+                    deliver_date: self.date,
+                    order_date: now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate(),
+                    total_money: self.totalMoney
                 };
 
                 let goods = self.cart.map(item => {
