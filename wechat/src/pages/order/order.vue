@@ -29,13 +29,17 @@
                 <ul class="list">
                     <li v-for="order in orderList">
                         <router-link :to="'/orderDetail/' + order.order_id">
+                            <div class="orderTime">
+                                <span>下单时间：{{order.order_date}}</span>
+                                <span v-if="order.delivery_state == 0" class="deliveryState">未发货</span>
+                            </div>
                             <div class="customerMes">
                                 <span class="name">{{order.username}}</span>
                                 <span class="phone">{{order.phone}}</span>
                             </div>
                             <div>
-                                <span class="time">{{order.order_date.substring(0, 10)}}</span>
-                                <span class="money">合计：{{order.total_money}}</span>
+                                <span class="deliveryAddress">送货地址：{{order.delivery_address}}</span>
+                                <span class="money">合计：￥{{order.total_money}}</span>
                             </div>
                         </router-link>
                     </li>
@@ -309,13 +313,25 @@
 
         .list {
             li {
-                padding: 0.1rem 0.3rem;
+                padding: 0.2rem 0.3rem;
                 background-color: #fff;
                 margin-bottom: 0.2rem;
 
                 a {
                     display: block;
                 }
+            }
+
+            .orderTime {
+                font-size: 0.24rem;
+                border-bottom: 1px solid #eee;
+                color: #999;
+                line-height: 0.5rem;
+            }
+
+            .deliveryState {
+                float: right;
+                color: #f00;
             }
 
             .customerMes {
@@ -328,7 +344,8 @@
                 }
             }
 
-            .time {
+            .deliveryAddress {
+                font-size: 0.24rem;
                 color: #999;
             }
 

@@ -9,5 +9,6 @@ export default {
 
     orderList: baseUrl + "/order",
     orderInsert: baseUrl + "/order/new",
-    orderDetail: baseUrl + "/order/detail"
+    orderDetail: baseUrl + "/order/detail",
+    orderDelete: baseUrl + "/order/delete"
 }

@@ -13,7 +13,7 @@ main.list = async function (ctx, next) {
         let pageSize = 20;
 
         let sqlCon = `
-            SELECT orders.id,order_id,deliver_date,order_date,total_money,customer_id,username,phone 
+            SELECT orders.id, order_id, deliver_date, delivery_address, delivery_state, order_date, total_money, customer_id, username, phone 
             FROM orders LEFT JOIN customer 
             ON orders.customer_id = customer.id 
         `;
@@ -99,13 +99,19 @@ main.detail = async function (ctx, next) {
         let connection = await sql.pool();
 
         let orderSql = `
-            SELECT orders.id,order_id,deliver_date,order_date,total_money,customer_id,username,phone 
+            SELECT orders.id, order_id, deliver_date, order_date, total_money, delivery_address, remarks, delivery_state, customer_id, username, phone, province, city, district
             FROM orders LEFT JOIN customer 
             ON orders.customer_id = customer.id 
             WHERE order_id = ${order_id}
         `;
 
-        let goodsSql = `SELECT * FROM order_goods WHERE order_id = ${order_id}`;
+        let goodsSql = `
+            SELECT goods_id, order_goods.num, price, name, color, category 
+            FROM order_goods 
+            LEFT JOIN goods ON order_goods.goods_id = goods.id
+            LEFT JOIN category ON goods.category_id = category.id
+            WHERE order_id = ${order_id}
+        `;
 
         let [order, goods] = await Promise.all([
             sql.operate(orderSql, connection),
@@ -121,6 +127,35 @@ main.detail = async function (ctx, next) {
                 order: order,
                 goods: goods
             }
+        }
+    } catch (err) {
+        console.log(err);
+
+        ctx.body = {
+            code: 0,
+            mes: "操作失败"
+        }
+    }
+};
+
+/**
+ * @desc 删除订单
+ */
+main.delete = async function (ctx, next) {
+    try {
+        let order_id = ctx.request.body.order_id;
+        let connection = await sql.pool();
+
+        await Promise.all([
+            sql.operate(`DELETE FROM orders WHERE order_id = ${order_id}`, connection),
+            sql.operate(`DELETE FROM order_goods WHERE order_id = ${order_id}`, connection)
+        ]);
+
+        connection.release();
+
+        ctx.body = {
+            code: 1,
+            mes: "success"
         }
     } catch (err) {
         console.log(err);

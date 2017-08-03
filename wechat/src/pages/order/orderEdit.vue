@@ -2,7 +2,7 @@
     <div>
         <!--订单页面-->
         <div class="orderAdd">
-            <v-header title="新增订单"></v-header>
+            <v-header title="修改订单"></v-header>
 
             <div class="baseMes">
                 <div class="formRow">
@@ -141,12 +141,17 @@
 
     export default{
         data(){
+            let self = this;
+
             return {
+                id: self.$route.params.order_id,    //订单id
                 customerBoxState: false,            //选择客户弹框的状态
                 customerSearch: "",                 //搜索客户输入框
                 selectId: "",                       //选中的客户的id
                 deliveryAddress: "",                //送货地址
                 remarks: "",                        //备注
+
+                initialGoods: [],                   //订单中初始的商品
 
                 goodsBoxState: false,               //选择商品弹框的状态
                 cartBoxState: false,                //购物车弹框的状态
@@ -245,6 +250,32 @@
         methods: {
             ...mapActions(["getCustomer"]),
 
+            //获取订单信息
+            getOrder(){
+                let self = this;
+
+                axios.post(api.orderDetail, {order_id: self.id})
+                    .then(res => {
+                        if (res.data.code === 1) {
+                            let order = res.data.data.order[0];
+
+                            self.selectId = order.customer_id;
+                            self.date = order.deliver_date;
+                            self.deliveryAddress = order.delivery_address;
+                            self.remarks = order.remarks;
+
+                            self.initialGoods = res.data.data.goods;
+
+                            self.initGoodsNum();
+                        } else {
+                            console.log(res.data);
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            },
+
             //ajax获取商品列表
             getGoods(){
                 let self = this;
@@ -257,11 +288,30 @@
                         });
 
                         self.goods = res.data;
+
+                        self.initGoodsNum();
                     })
                     .catch(err => {
                         console.log("获取商品列表失败");
                         console.log(err);
                     })
+            },
+
+            initGoodsNum(){
+                let self = this;
+
+                if (self.initialGoods.length === 0 || self.goods === 0) {
+                    return;
+                }
+
+                self.initialGoods.forEach(item => {
+                    let cur = self.goods.find(g => {
+                        return g.id === item.goods_id;
+                    });
+
+                    cur.sNum = item.num;
+                    cur.price = item.price;
+                });
             },
 
             //根据搜索的字段判断该客户是否显示
@@ -322,8 +372,7 @@
                     return;
                 }
 
-                let now = new Date();
-                let order_id = now.getTime();
+                let order_id = self.id;
 
                 let order = {
                     order_id: order_id,
@@ -355,7 +404,7 @@
                         if (res.data.code === 1) {
                             alert("下单成功");
                             self.$router.push("/order");
-                        }else{
+                        } else {
                             alert("操作失败");
                         }
                     })
@@ -366,6 +415,7 @@
         },
 
         mounted(){
+            this.getOrder();        //获取订单信息
             this.getGoods();        //ajax获取商品列表
             this.getCustomer({});   //更新store中的客户
         }
