@@ -39,15 +39,19 @@
         <ul class="toolBtn">
             <router-link :to="'/orderEdit/' + id" tag="li">修改</router-link>
             <br>
-            <li class="deleteOrder" @click="deleteOrder">删除</li>
+            <li class="deleteOrder" @click="dialogShow = true">删除</li>
         </ul>
+
+        <v-dialog :show.sync="dialogShow" :options="dialogOptions" @ok="deleteOrder"></v-dialog>
     </div>
 </template>
 
 <script>
     import axios from "axios";
     import api from "../../common/js/api";
+
     import vHeader from "../../components/header.vue";
+    import vDialog from "../../components/dialog.vue";
 
     export default{
         data(){
@@ -56,7 +60,14 @@
             return {
                 id: self.$route.params.order_id,    //订单id
                 order: {},                          //订单信息
-                goods: []                           //商品信息
+                goods: [],                          //商品信息
+
+                dialogShow: false,                   //弹框的状态
+                dialogOptions: {
+                    title: "警告",
+                    content: "是否删除这个订单？",
+                    dialog: true
+                }
             }
         },
 
@@ -74,7 +85,8 @@
         },
 
         components: {
-            vHeader
+            vHeader,
+            vDialog
         },
 
         methods: {
