@@ -13,6 +13,8 @@ import vOrderEdit from "../pages/order/orderEdit.vue";
 
 import vCustomer from "../pages/customer/customer.vue";
 import vCustomerAdd from "../pages/customer/customerAdd.vue";
+import vCustomerDetail from "../pages/customer/customerDetail.vue";
+import vCustomerEdit from "../pages/customer/customerEdit.vue";
 
 import vReport from "../pages/report/report.vue";
 
@@ -24,47 +26,20 @@ export default new Router({
             path: "/",
             component: vMain,
             children: [
-                {
-                    path: "/",
-                    component: vIndex
-                },
-                {
-                    path: "goods",
-                    component: vGoods
-                },
-                {
-                    path: "order",
-                    component: vOrder
-                },
-                {
-                    path: "customer",
-                    component: vCustomer
-                },
-                {
-                    path: "report",
-                    component: vReport
-                }
+                {path: "/", component: vIndex},
+                {path: "goods", component: vGoods},
+                {path: "order", component: vOrder},
+                {path: "customer", component: vCustomer},
+                {path: "/customer/detail/:customer_id", component: vCustomerDetail},
+                {path: "report", component: vReport}
             ]
         },
 
-        {
-            path: "/customerAdd",
-            component: vCustomerAdd
-        },
+        {path: "/customerAdd", component: vCustomerAdd},
+        {path: "/customerEdit/:customer_id", component: vCustomerEdit},
 
-        {
-            path: "/orderAdd",
-            component: vOrderAdd
-        },
-
-        {
-            path: "/orderDetail/:order_id",
-            component: vOrderDetail
-        },
-
-        {
-            path: "/orderEdit/:order_id",
-            component: vOrderEdit
-        }
+        {path: "/orderAdd", component: vOrderAdd},
+        {path: "/orderDetail/:order_id", component: vOrderDetail},
+        {path: "/orderEdit/:order_id", component: vOrderEdit}
     ]
 });

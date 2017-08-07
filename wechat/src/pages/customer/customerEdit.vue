@@ -55,11 +55,12 @@
     import api from "../../common/js/api";
 
     export default{
-        components: {
-            vHeader
-        },
         data(){
+            let self = this;
+
             return {
+                id: self.$route.params.customer_id,
+
                 provinceData: addressData["86"],
                 cityData: {},
                 districtData: {},
@@ -89,6 +90,7 @@
                 }
             }
         },
+
         watch: {
             //省市区联动
             provinceId(val){
@@ -113,7 +115,41 @@
                 }
             }
         },
+
+        components: {
+            vHeader
+        },
+
         methods: {
+            //获取用户信息
+            getData(){
+                let self = this;
+
+                axios.post(api.customerBase, {id: self.id})
+                    .then(res => {
+                        if (res.data.code === 1) {
+                            let mes = res.data.data[0];
+
+                            self.username = mes.username;
+                            self.phone = mes.phone;
+                            self.provinceId = mes.province_id;
+
+                            setTimeout(function () {
+                                self.cityId = mes.city_id;
+
+                                setTimeout(function () {
+                                    self.districtId = mes.district_id;
+                                }, 0);
+                            }, 0);
+                        } else {
+                            console.log(res.data);
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            },
+
             //提交表单
             submit(){
                 let self = this;
@@ -127,6 +163,7 @@
                 let districtName = addressData[self.cityId][self.districtId];
 
                 let postData = {
+                    id: self.id,
                     username: self.username,
                     phone: self.phone,
                     province_id: self.provinceId,
@@ -138,7 +175,7 @@
                 };
 
                 axios
-                    .post(api.customerInsert, postData)
+                    .post(api.customerUpdate, postData)
                     .then(res => {
                         if (res.data.code === 1) {
                             alert("保存成功！");
@@ -196,6 +233,10 @@
 
                 return canSubmit;
             }
+        },
+
+        mounted(){
+            this.getData();
         }
     }
 </script>

@@ -19,6 +19,7 @@
         top: 0;
         left: 0;
         background-color: #31bfcf;
+        z-index: 1;
 
         .fa-angle-left {
             position: absolute;

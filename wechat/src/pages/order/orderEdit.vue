@@ -380,7 +380,6 @@
                     delivery_address: self.deliveryAddress,
                     remarks: self.remarks,
                     deliver_date: self.date,
-                    order_date: now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate(),
                     total_money: self.totalMoney
                 };
 
@@ -399,7 +398,7 @@
                 };
 
                 axios
-                    .post(api.orderInsert, data)
+                    .post(api.orderUpdate, data)
                     .then(res => {
                         if (res.data.code === 1) {
                             alert("下单成功");

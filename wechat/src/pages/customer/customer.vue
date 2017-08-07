@@ -7,13 +7,15 @@
 
         <ul class="customerList">
             <li v-for="item in customerShows">
-                <div class="nameRow">
-                    <span class="customerName">{{item.username}}</span>
-                    <span class="phone">{{item.phone}}</span>
-                </div>
-                <div class="address">
-                    {{item.province}}-{{item.city}}-{{item.district}}
-                </div>
+                <router-link :to="'/customer/detail/' + item.id">
+                    <div class="nameRow">
+                        <span class="customerName">{{item.username}}</span>
+                        <span class="phone">{{item.phone}}</span>
+                    </div>
+                    <div class="address">
+                        {{item.province}}-{{item.city}}-{{item.district}}
+                    </div>
+                </router-link>
             </li>
         </ul>
 
@@ -109,6 +111,10 @@
             li {
                 border-bottom: 1px solid #eee;
                 padding: 0.2rem 0 0.1rem 0;
+            }
+
+            a {
+                display: block;
             }
 
             .nameRow {

@@ -37,7 +37,7 @@ main.list = async function (ctx, next) {
 
         //分页
         sqlCon += `
-            ORDER BY order_date DESC 
+            ORDER BY order_id DESC 
             LIMIT ${(page - 1) * pageSize},${page * pageSize}
         `;
 
@@ -251,6 +251,8 @@ main.update = async function (ctx, next) {
         `;
         let oldGoods = await sql.operate(goodsSql, connection);
 
+        await sql.operate(`DELETE FROM order_goods WHERE order_id = ${order_id}`, connection);        //删除旧的订单商品
+
         //恢复商品数量的sql语句
         let addGoodsSql = `
             UPDATE goods
@@ -276,7 +278,7 @@ main.update = async function (ctx, next) {
         let goodsId = [];
         goods.forEach(item => {
             subGoodsSql += `
-                WHEN ${item.goods_id} THEN num + ${item.num}
+                WHEN ${item.goods_id} THEN num - ${item.num}
             `;
             goodsId.push(item.goods_id);
         });
@@ -287,13 +289,12 @@ main.update = async function (ctx, next) {
 
         let updateOrderSql = `
             UPDATE orders 
-            SET customer_id = ${order.customer_id}, delivery_address = ${order.delivery_address}, remarks = ${order.remarks}, 
-            deliver_date = ${order.deliver_date}, total_money=${order.total_money} 
+            SET customer_id = '${order.customer_id}', delivery_address = '${order.delivery_address}', remarks = '${order.remarks}', 
+            deliver_date = '${order.deliver_date}', total_money = '${order.total_money}' 
             WHERE order_id = ${order.order_id}
         `;
 
         await Promise.all([
-            sql.operate(`DELETE FROM order_goods WHERE order_id = ${order_id}`, connection),        //删除旧的订单商品
             sql.operate(addGoodsSql, connection),                                                   //恢复商品表的库存
             sql.operate(updateOrderSql, connection),                                                //更新订单表
             sql.operate("INSERT INTO order_goods " + util.insertSql(goods), connection),            //将新的商品插入到订单商品表

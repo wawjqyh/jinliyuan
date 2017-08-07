@@ -6,7 +6,11 @@ export default {
     getCustomer({commit}){
         axios.get(api.customerList)
             .then(function (res) {
-                commit("initCustomer", res.data);
+                if (res.data.code === 1) {
+                    commit("initCustomer", res.data.data);
+                } else {
+                    console.log("获取客户列表失败");
+                }
             })
             .catch(err => {
                 console.log("获取客户列表失败：");

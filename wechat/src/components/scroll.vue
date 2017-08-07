@@ -2,7 +2,7 @@
     <div class="scroll" ref="scrollContainer" @scroll="onScroll">
         <slot></slot>
 
-        <div class="loadTip" v-show="!canLoad">
+        <div class="loadTip" v-show="loading">
             <div class="tipCon">
                 <span class="loadT1"></span>
                 <span class="loadT2"></span>
@@ -15,7 +15,8 @@
 <script>
     export default{
         props: {
-            canLoad: true       //是否可以加载，防止重复加载
+            canLoad: true,      //是否可以加载，防止重复加载
+            loading: false      //是否正在加载中
         },
 
         methods: {
@@ -30,8 +31,6 @@
                 let el = e.target;
 
                 if ((el.scrollHeight - el.clientHeight - el.scrollTop) < 100) {
-                    self.$emit("update:canLoad", false);
-
                     self.$emit("loadMore");
                 }
             }

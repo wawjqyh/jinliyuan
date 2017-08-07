@@ -25,7 +25,7 @@
         </div>
 
         <div class="listCon">
-            <v-scroll :canLoad.sync="canLoad" @loadMore="loadMore">
+            <v-scroll :canLoad="canLoad" :loading="loading" @loadMore="loadMore">
                 <ul class="list">
                     <li v-for="order in orderList">
                         <router-link :to="'/orderDetail/' + order.order_id">
@@ -82,6 +82,7 @@
 
             return {
                 canLoad: true,                      //是否可加载数据，防止重复加载
+                loading: false,                     //是否正在加载中
                 orderList: [],                      //订单列表
                 dateClass: "all",                   //已选中的日期类型
                 filterDate: [],                     //日期
@@ -164,24 +165,36 @@
 
             loadMore(){
                 this.postData.page++;
+                this.loadData();
             },
 
             loadData(){
                 let self = this;
 
+                self.loading = true;
+                self.canLoad = false;
+
                 axios.post(api.orderList, self.postData)
                     .then(function (res) {
+                        self.loading = false;
+
                         if (res.data.code === 1) {
+                            //如果当前页码为1则为第一次加载，覆盖原有的数据。如果为加载更多则追加数据
                             if (self.postData.page === 1) {
                                 self.orderList = res.data.data;
                             } else {
                                 self.orderList = self.orderList.concat(res.data.data);
+                            }
+
+                            if (res.data.data.length >= 20) {
+                                self.canLoad = true;
                             }
                         } else {
                             console.log(res);
                         }
                     })
                     .catch(err => {
+                        self.loading = false;
                         console.log("获取客户列表失败：");
                         console.log(err);
                     });

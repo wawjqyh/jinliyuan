@@ -1,6 +1,6 @@
 <template>
     <ul class="footerNav">
-        <router-link to="/" tag="li">
+        <router-link to="/" tag="li" exact>
             <div><span class="fa fa-home"></span></div>
             <div class="navName">首页</div>
         </router-link>
@@ -51,6 +51,8 @@
         overflow: hidden;
         color: #999;
         box-sizing: border-box;
+        z-index: 1;
+        background-color: #fff;
 
         li {
             flex-grow: 1;
@@ -68,7 +70,7 @@
             }
         }
 
-        .router-link-exact-active {
+        .router-link-active {
             color: #31bfcf;
         }
     }
