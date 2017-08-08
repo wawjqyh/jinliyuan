@@ -6,7 +6,7 @@ module.exports = {
         index: path.resolve(__dirname, '../dist/index.html'),   //index文件的路径
         assetsRoot: path.resolve(__dirname, '../dist'),     //根目录
         assetsSubDirectory: 'static',                       //静态资源目录
-        assetsPublicPath: '',
+        assetsPublicPath: '/sales/',
         productionSourceMap: true,                          //是否生成source map
         productionGzip: false,                              //默认关闭，如果要使用确保安装了compression-webpack-plugin
         productionGzipExtensions: ['js', 'css'],            //扩展压缩内容

@@ -46,6 +46,7 @@
 <script>
     import axios from "axios";
     import api from "../../common/js/api";
+    import {mapMutations} from "vuex";
 
     import vHeader from "../../components/header.vue";
     import vDialog from "../../components/dialog.vue";
@@ -98,6 +99,8 @@
         },
 
         methods: {
+            ...mapMutations(["showLoading", "hideLoading"]),
+
             //获取用户信息
             getData(){
                 let self = this;
@@ -120,8 +123,12 @@
             deleteCustomer(){
                 let self = this;
 
+                self.showLoading();
+
                 axios.post(api.customerDelete, {id: self.id})
                     .then(res => {
+                        self.hideLoading();
+
                         if (res.data.code === 1) {
                             alert("删除成功");
                             self.$router.push("/customer");
@@ -130,6 +137,7 @@
                         }
                     })
                     .catch(err => {
+                        self.hideLoading();
                         console.log(err);
                         alert("操作失败");
                     })

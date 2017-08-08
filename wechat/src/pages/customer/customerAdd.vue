@@ -53,11 +53,9 @@
     import addressData from "../../common/js/placeData";
     import axios from "axios";
     import api from "../../common/js/api";
+    import {mapMutations} from "vuex";
 
     export default{
-        components: {
-            vHeader
-        },
         data(){
             return {
                 provinceData: addressData["86"],
@@ -89,6 +87,7 @@
                 }
             }
         },
+
         watch: {
             //省市区联动
             provinceId(val){
@@ -113,7 +112,14 @@
                 }
             }
         },
+
+        components: {
+            vHeader
+        },
+
         methods: {
+            ...mapMutations(["showLoading", "hideLoading"]),
+
             //提交表单
             submit(){
                 let self = this;
@@ -137,9 +143,13 @@
                     district: districtName
                 };
 
+                self.showLoading();
+
                 axios
                     .post(api.customerInsert, postData)
                     .then(res => {
+                        self.hideLoading();
+
                         if (res.data.code === 1) {
                             alert("保存成功！");
                             self.$router.go(-1);
@@ -148,6 +158,7 @@
                         }
                     })
                     .catch(err => {
+                        self.hideLoading();
                         console.log(err);
                         alert("操作失败");
                     });

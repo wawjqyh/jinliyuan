@@ -1,5 +1,6 @@
 export default {
     customer: [],
     goods: [],
-    category: []
+    category: [],
+    loadingState: false
 }

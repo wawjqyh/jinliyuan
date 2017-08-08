@@ -131,7 +131,7 @@
 </template>
 
 <script>
-    import {mapState, mapActions} from "vuex";
+    import {mapState, mapMutations, mapActions} from "vuex";
     import axios from "axios";
     import api from "../../common/js/api";
 
@@ -248,6 +248,7 @@
         },
 
         methods: {
+            ...mapMutations(["showLoading", "hideLoading"]),
             ...mapActions(["getCustomer"]),
 
             //获取订单信息
@@ -397,9 +398,12 @@
                     goods: goods
                 };
 
+                self.showLoading();
+
                 axios
                     .post(api.orderUpdate, data)
                     .then(res => {
+                        self.hideLoading();
                         if (res.data.code === 1) {
                             alert("下单成功");
                             self.$router.push("/order");
@@ -408,6 +412,7 @@
                         }
                     })
                     .catch(err => {
+                        self.hideLoading();
                         alert("操作失败");
                     });
             }

@@ -1,6 +1,8 @@
 let baseUrl = "/api";
 
 export default {
+    index: baseUrl + "/index",
+
     customerList: baseUrl + "/customer",
     customerInsert: baseUrl + "/customer/insert",
     customerDetail: baseUrl + "/customer/detail",

@@ -53,6 +53,7 @@
     import addressData from "../../common/js/placeData";
     import axios from "axios";
     import api from "../../common/js/api";
+    import {mapMutations} from "vuex";
 
     export default{
         data(){
@@ -121,6 +122,8 @@
         },
 
         methods: {
+            ...mapMutations(["showLoading", "hideLoading"]),
+
             //获取用户信息
             getData(){
                 let self = this;
@@ -174,9 +177,13 @@
                     district: districtName
                 };
 
+                self.showLoading();
+
                 axios
                     .post(api.customerUpdate, postData)
                     .then(res => {
+                        self.hideLoading();
+
                         if (res.data.code === 1) {
                             alert("保存成功！");
                             self.$router.go(-1);
@@ -185,6 +192,7 @@
                         }
                     })
                     .catch(err => {
+                        self.hideLoading();
                         console.log(err);
                         alert("操作失败");
                     });
