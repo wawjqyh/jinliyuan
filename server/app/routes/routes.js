@@ -4,6 +4,7 @@ let index = require("../controller/index");
 let customer = require("../controller/customer");
 let goods = require("../controller/goods");
 let order = require("../controller/order");
+let staff = require("../controller/staff");
 
 router.get("/api/index", index.index);                      //首页
 
@@ -22,5 +23,7 @@ router.post("/api/order/new", order.new);                   //新增订单
 router.post("/api/order/detail", order.detail);             //订单详情
 router.post("/api/order/delete", order.delete);             //删除订单
 router.post("/api/order/update", order.update);             //修改订单
+
+router.get("/api/staff", staff.list);                       //员工列表
 
 module.exports = router;
