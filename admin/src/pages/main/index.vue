@@ -33,6 +33,7 @@
     }
 
     .content {
-        padding: 10px 20px;
+        position: relative;
+        padding: 60px 20px 20px 20px;
     }
 </style>

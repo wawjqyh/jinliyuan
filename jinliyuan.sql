@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-08-10 18:05:46
+Date: 2017-08-11 17:48:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -175,6 +175,32 @@ INSERT INTO `order_goods` VALUES ('59', '1502175170823', '6', '2', '153');
 INSERT INTO `order_goods` VALUES ('60', '1502183522901', '7', '4', '1');
 
 -- ----------------------------
+-- Table structure for `production`
+-- ----------------------------
+DROP TABLE IF EXISTS `production`;
+CREATE TABLE `production` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `goods_id` int(11) NOT NULL COMMENT '商品id',
+  `num` tinyint(4) NOT NULL COMMENT '生产数量',
+  `date` date NOT NULL COMMENT '生产日期',
+  `cuter_id` int(11) NOT NULL COMMENT '开料id',
+  `cut_price` float NOT NULL COMMENT '开料单价',
+  `drill_id` int(11) NOT NULL COMMENT '排钻id',
+  `drill_price` float NOT NULL COMMENT '排钻单价',
+  `sanding_id` int(11) NOT NULL COMMENT '锣机id',
+  `sanding_price` float NOT NULL COMMENT '锣机单价',
+  `paste_id` int(11) NOT NULL COMMENT '封边id',
+  `paste_price` float NOT NULL COMMENT '封边单价',
+  `pack_id` int(11) NOT NULL COMMENT '打包id',
+  `pack_price` float NOT NULL COMMENT '打包单价',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- ----------------------------
+-- Records of production
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `staff`
 -- ----------------------------
 DROP TABLE IF EXISTS `staff`;
@@ -185,10 +211,13 @@ CREATE TABLE `staff` (
   `job_id` int(11) NOT NULL,
   `state` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of staff
 -- ----------------------------
 INSERT INTO `staff` VALUES ('1', '员工1', '12300000000', '1', '1');
 INSERT INTO `staff` VALUES ('2', '员工2', '12311111111', '2', '1');
+INSERT INTO `staff` VALUES ('3', 'test', '12300000000', '1', '0');
+INSERT INTO `staff` VALUES ('4', 'test2', '13700000000', '3', '1');
+INSERT INTO `staff` VALUES ('5', 'test3', '13811111111', '4', '1');

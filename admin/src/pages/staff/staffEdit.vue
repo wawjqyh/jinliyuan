@@ -1,7 +1,7 @@
 <template>
     <div class="staffAdd">
         <div class="position"><b>位置：</b>生产 <span class="el-icon-arrow-right"></span> 员工 <span
-            class="el-icon-arrow-right"></span> 添加员工
+            class="el-icon-arrow-right"></span> 修改员工
         </div>
 
         <el-form :model="staff" ref="staffAdd" :rules="rules" label-width="100px" class="form">
@@ -22,7 +22,7 @@
 
             <el-form-item>
                 <el-button type="primary" @click="submit">提交</el-button>
-                <el-button @click="$router.go(-1)">返回</el-button>
+                <el-button>返回</el-button>
             </el-form-item>
         </el-form>
     </div>

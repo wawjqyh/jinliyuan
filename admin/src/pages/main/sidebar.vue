@@ -15,7 +15,7 @@
             <el-submenu index="/staff">
                 <template slot="title"><i class="el-icon-setting"></i>生产</template>
                 <el-menu-item index="/staff" :route="{path: '/staff'}">员工</el-menu-item>
-                <el-menu-item index="3-2">生产记录</el-menu-item>
+                <el-menu-item index="/production" :route="{path: '/production'}">派工单</el-menu-item>
                 <el-menu-item index="3-3">月统计</el-menu-item>
             </el-submenu>
         </el-menu>

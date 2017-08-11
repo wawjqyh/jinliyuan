@@ -25,5 +25,8 @@ router.post("/api/order/delete", order.delete);             //删除订单
 router.post("/api/order/update", order.update);             //修改订单
 
 router.get("/api/staff", staff.list);                       //员工列表
+router.get("/api/staff/job", staff.jobList);                //职位列表
+router.post("/api/staff/add", staff.add);                   //新增员工
+router.post("/api/staff/delete", staff.delete);             //删除员工
 
 module.exports = router;
