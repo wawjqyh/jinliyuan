@@ -31,7 +31,7 @@ main.jobList = async function (ctx, next) {
 main.list = async function (ctx, next) {
     try {
         let staffSql = `
-            SELECT staff.id, name, phone, job 
+            SELECT staff.id, name, phone, job_name, job 
             FROM staff 
             LEFT JOIN job ON staff.job_id = job.id 
             WHERE state != 0 

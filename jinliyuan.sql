@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-08-11 17:48:12
+Date: 2017-08-21 18:46:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -70,19 +70,22 @@ CREATE TABLE `goods` (
   `color` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `num` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
+  `state` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of goods
 -- ----------------------------
-INSERT INTO `goods` VALUES ('1', '200', '白', '41', '1');
-INSERT INTO `goods` VALUES ('2', '320', '红', '24', '2');
-INSERT INTO `goods` VALUES ('3', '330', '黑', '56', '3');
-INSERT INTO `goods` VALUES ('4', '890', '白', '343', '3');
-INSERT INTO `goods` VALUES ('5', '355', '黄', '38', '2');
-INSERT INTO `goods` VALUES ('6', '860', '红', '71', '2');
-INSERT INTO `goods` VALUES ('7', '111', '蓝', '222', '1');
+INSERT INTO `goods` VALUES ('1', '200', '白', '41', '1', '1');
+INSERT INTO `goods` VALUES ('2', '320', '红', '24', '2', '1');
+INSERT INTO `goods` VALUES ('3', '330', '黑', '56', '3', '1');
+INSERT INTO `goods` VALUES ('4', '890', '白', '343', '3', '1');
+INSERT INTO `goods` VALUES ('5', '355', '黄', '38', '2', '1');
+INSERT INTO `goods` VALUES ('6', '860', '红', '71', '2', '1');
+INSERT INTO `goods` VALUES ('7', '111', '蓝', '222', '1', '1');
+INSERT INTO `goods` VALUES ('8', '910', '灰色', '56', '2', '1');
+INSERT INTO `goods` VALUES ('9', '666', '黑', '60', '3', '1');
 
 -- ----------------------------
 -- Table structure for `job`
@@ -90,6 +93,7 @@ INSERT INTO `goods` VALUES ('7', '111', '蓝', '222', '1');
 DROP TABLE IF EXISTS `job`;
 CREATE TABLE `job` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `job_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `job` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -97,11 +101,11 @@ CREATE TABLE `job` (
 -- ----------------------------
 -- Records of job
 -- ----------------------------
-INSERT INTO `job` VALUES ('1', '开料');
-INSERT INTO `job` VALUES ('2', '排钻');
-INSERT INTO `job` VALUES ('3', '锣机');
-INSERT INTO `job` VALUES ('4', '封边');
-INSERT INTO `job` VALUES ('5', '打包');
+INSERT INTO `job` VALUES ('1', '开料', 'cuter');
+INSERT INTO `job` VALUES ('2', '排钻', 'drill');
+INSERT INTO `job` VALUES ('3', '锣机', 'sanding');
+INSERT INTO `job` VALUES ('4', '封边', 'paste');
+INSERT INTO `job` VALUES ('5', '打包', 'pack');
 
 -- ----------------------------
 -- Table structure for `orders`
@@ -211,7 +215,7 @@ CREATE TABLE `staff` (
   `job_id` int(11) NOT NULL,
   `state` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of staff
@@ -221,3 +225,4 @@ INSERT INTO `staff` VALUES ('2', '员工2', '12311111111', '2', '1');
 INSERT INTO `staff` VALUES ('3', 'test', '12300000000', '1', '0');
 INSERT INTO `staff` VALUES ('4', 'test2', '13700000000', '3', '1');
 INSERT INTO `staff` VALUES ('5', 'test3', '13811111111', '4', '1');
+INSERT INTO `staff` VALUES ('6', 'test4', '13866666666', '5', '1');

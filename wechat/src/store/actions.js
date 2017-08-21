@@ -22,7 +22,11 @@ export default {
     getGoods({commit}){
         axios.get(api.goodsList)
             .then(res => {
-                commit("initGoods", res.data);
+                if (res.data.code === 1) {
+                    commit("initGoods", res.data.data);
+                } else {
+                    console.log("获取商品列表失败");
+                }
             })
             .catch(err => {
                 console.log("获取商品列表失败");
@@ -34,7 +38,7 @@ export default {
     getCategory({commit}){
         axios.get(api.goodsCategory)
             .then(res => {
-                commit("initCategory", res.data);
+                commit("initCategory", res.data.data);
             })
             .catch(err => {
                 console.log("获取商品类别列表失败");

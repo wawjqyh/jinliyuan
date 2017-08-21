@@ -3,7 +3,7 @@
         <el-menu class="sidebarMenu" :default-active="$route.path" theme="dark" :router="true">
             <el-submenu index="1">
                 <template slot="title"><i class="el-icon-menu"></i>报表</template>
-                <el-menu-item index="1-1">库存</el-menu-item>
+                <el-menu-item index="/">库存</el-menu-item>
                 <el-menu-item index="1-2">销量统计</el-menu-item>
                 <el-menu-item index="1-3">客户分布</el-menu-item>
             </el-submenu>

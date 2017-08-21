@@ -252,12 +252,16 @@
 
                 axios.get(api.goodsList)
                     .then(res => {
-                        res.data.forEach(item => {
-                            item.sNum = 0;
-                            item.price = "";
-                        });
+                        if (res.data.code === 1) {
+                            res.data.data.forEach(item => {
+                                item.sNum = 0;
+                                item.price = "";
+                            });
 
-                        self.goods = res.data;
+                            self.goods = res.data.data;
+                        } else {
+                            console.log(res);
+                        }
                     })
                     .catch(err => {
                         console.log("获取商品列表失败");
@@ -360,7 +364,7 @@
                         if (res.data.code === 1) {
                             alert("下单成功");
                             self.$router.push("/order");
-                        }else{
+                        } else {
                             alert("操作失败");
                         }
                     })

@@ -1,21 +1,23 @@
 <template>
-    <div class="staffAdd">
-        <div class="position"><b>位置：</b>生产 <span class="el-icon-arrow-right"></span> 员工 <span
-            class="el-icon-arrow-right"></span> 添加员工
-        </div>
+    <div class="goodsAdd">
+        <div class="position"><b>位置：</b>报表 <span class="el-icon-arrow-right"></span> 新增产品</div>
 
-        <el-form :model="staff" ref="staffAdd" :rules="rules" label-width="100px" class="form">
-            <el-form-item label="姓名" prop="name">
-                <el-input v-model="staff.name"></el-input>
+        <el-form :model="product" ref="productAdd" :rules="rules" :label-width="'100px'" class="form">
+            <el-form-item label="型号" prop="name">
+                <el-input v-model="product.name"></el-input>
             </el-form-item>
 
-            <el-form-item label="电话" prop="phone">
-                <el-input v-model="staff.phone"></el-input>
+            <el-form-item label="颜色" prop="color">
+                <el-input v-model="product.color"></el-input>
             </el-form-item>
 
-            <el-form-item label="职位" prop="job_id">
-                <el-select v-model="staff.job_id" placeholder="请选择">
-                    <el-option v-for="item in job" :label="item.job_name" :value="item.id" :key="item.id">
+            <el-form-item label="库存" prop="num">
+                <el-input v-model="product.num"></el-input>
+            </el-form-item>
+
+            <el-form-item label="类型" prop="category_id">
+                <el-select v-model="product.category_id" placeholder="请选择">
+                    <el-option v-for="item in category" :label="item.category" :value="item.id" :key="item.id">
                     </el-option>
                 </el-select>
             </el-form-item>
@@ -34,49 +36,54 @@
 
     export default{
         data(){
-            //验证手机号
-            let validatePhone = function (rule, value, callback) {
-                if (!/^\d{11}$/.test(value)) {
-                    callback(new Error("请输入正确的手机号"))
+            //验证库存
+            let validateNum = function (rule, value, callback) {
+                if (!/^\d+$/.test(value)) {
+                    callback(new Error("请输入数字"));
                 } else {
                     callback();
                 }
             };
 
             return {
-                job: [],                //职位列表
-                staff: {                 //表单字段
+                category: [],           //产品类型
+
+                product: {
                     name: "",
-                    phone: "",
-                    job_id: ""
+                    color: "",
+                    num: "0",
+                    category_id: ""
                 },
-                rules: {                //表单验证规则
-                    name: [{required: true, message: "请输入姓名", trigger: "blur"}],
-                    phone: [
-                        {required: true, message: "请输入手机号", trigger: "blur"},
-                        {validator: validatePhone, trigger: "blur"}
+
+                rules: {
+                    name: [{required: true, message: "请输入型号", trigger: "blur"}],
+                    color: [{required: true, message: "请输入颜色", trigger: "blur"}],
+                    num: [
+                        {required: true, message: "请输入库存", trigger: "blur"},
+                        {validator: validateNum, trigger: "blur"}
                     ],
-                    job_id: [{required: true, message: "请选择职位"}]
+                    category_id: [{required: true, message: "请选择类型"}]
                 }
             }
         },
 
         methods: {
-            //获取职位列表
-            getJobList(){
+            //获取产品类型
+            getCategory(){
                 let self = this;
-                axios.get(api.jobList).then(res => {
+
+                axios.get(api.category).then(res => {
                     if (res.data.code === 1) {
-                        self.job = res.data.data;
+                        self.category = res.data.data;
                     } else {
                         self.$message({
-                            message: "网络错误，加载职位失败，请重试！",
+                            message: "网络错误，加载产品类型失败，请重试！",
                             type: "error"
                         });
                     }
                 }).catch(err => {
                     self.$message({
-                        message: "网络错误，加载职位失败，请重试！",
+                        message: "网络错误，加载产品类型失败，请重试！",
                         type: "error"
                     });
                 })
@@ -86,7 +93,7 @@
                 let self = this;
 
                 //表单验证
-                self.$refs.staffAdd.validate(valid => {
+                self.$refs.productAdd.validate(valid => {
                     if (!valid) {
                         return;
                     }
@@ -94,7 +101,8 @@
                     //显示全屏Loading
                     let loading = self.$loading({fullscreen: true});
 
-                    axios.post(api.staffAdd, self.staff).then(res => {
+                    //提交
+                    axios.post(api.goodsAdd, self.product).then(res => {
                         loading.close();
 
                         if (res.data.code === 1) {
@@ -105,7 +113,7 @@
                             });
 
                             //返回列表页
-                            self.$router.push("/staff");
+                            self.$router.push("/");
                         } else {
                             self.$message({
                                 message: "保存失败，请重试！",
@@ -119,19 +127,19 @@
                             message: "保存失败，请重试！",
                             type: "error"
                         });
-                    });
+                    })
                 });
             }
         },
 
         mounted(){
-            this.getJobList();
+            this.getCategory();
         }
     }
 </script>
 
 <style lang="less">
-    .staffAdd {
+    .goodsAdd {
         .form {
             width: 500px;
 

@@ -4,7 +4,7 @@
 
         <el-row class="operate">
             <div class="btnAera">
-                <router-link to="/staff/add">
+                <router-link to="/production/add">
                     <el-button type="primary" icon="plus" class="newBtn">新增派工单</el-button>
                 </router-link>
             </div>

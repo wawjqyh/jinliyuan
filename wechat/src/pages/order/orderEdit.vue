@@ -283,12 +283,16 @@
 
                 axios.get(api.goodsList)
                     .then(res => {
-                        res.data.forEach(item => {
-                            item.sNum = 0;
-                            item.price = "";
-                        });
+                        if (res.data.code === 1) {
+                            res.data.data.forEach(item => {
+                                item.sNum = 0;
+                                item.price = "";
+                            });
 
-                        self.goods = res.data;
+                            self.goods = res.data.data;
+                        } else {
+                            console.log(res);
+                        }
 
                         self.initGoodsNum();
                     })

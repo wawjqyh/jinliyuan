@@ -14,7 +14,7 @@
             <el-table :data="staff" stripe style="width: 100%">
                 <el-table-column prop="name" label="姓名" align="center"></el-table-column>
                 <el-table-column prop="phone" label="电话" align="center"></el-table-column>
-                <el-table-column prop="job" label="职位" align="center"></el-table-column>
+                <el-table-column prop="job_name" label="职位" align="center"></el-table-column>
                 <el-table-column label="操作" align="center">
                     <template scope="scope">
                         <router-link :to="'/staff/edit/' + scope.row.id">

@@ -17,6 +17,9 @@ router.post("/api/customer/update", customer.update);       //修改客户信息
 
 router.get("/api/goods", goods.list);                       //商品列表
 router.get("/api/goods/category", goods.category);          //商品类型列表
+router.post("/api/goods/insert", goods.insert);             //新增产品
+router.post("/api/goods/delete", goods.delete);             //删除产品
+router.post("/api/goods/detail", goods.detail);             //单个商品信息
 
 router.post("/api/order", order.list);                      //订单列表
 router.post("/api/order/new", order.new);                   //新增订单
