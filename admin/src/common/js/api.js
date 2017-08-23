@@ -11,5 +11,6 @@ export default {
     goodsList: baseUrl + "/goods",
     goodsAdd: baseUrl + "/goods/insert",
     goodsDelete: baseUrl + "/goods/delete",
-    goodsDetail: baseUrl + "/goods/detail"
+    goodsDetail: baseUrl + "/goods/detail",
+    goodsUpdate: baseUrl + "/goods/update"
 }

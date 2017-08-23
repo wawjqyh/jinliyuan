@@ -1,6 +1,9 @@
 <template>
     <div class="stock">
-        <div class="position"><b>位置：</b>报表 <span class="el-icon-arrow-right"></span> 库存</div>
+        <el-breadcrumb separator="/" class="position">
+            <el-breadcrumb-item>报表</el-breadcrumb-item>
+            <el-breadcrumb-item>库存</el-breadcrumb-item>
+        </el-breadcrumb>
 
         <el-row class="operate">
             <el-form :inline="true" class="form">

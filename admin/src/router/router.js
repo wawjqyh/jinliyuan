@@ -7,6 +7,8 @@ import vGoods from "../pages/goods/goods.vue";
 import vGoodsAdd from "../pages/goods/goodsAdd.vue";
 import vGoodsEdit from "../pages/goods/goodsEdit.vue";
 
+import vOrder from "../pages/orders/orders.vue";
+
 import vStaff from "../pages/staff/staff.vue";
 import vStaffAdd from "../pages/staff/staffAdd.vue";
 import vStaffEdit from "../pages/staff/staffEdit.vue";
@@ -24,6 +26,8 @@ export default new Router({
             children: [
                 {path: "/", component: vGoods},
                 {path: "goods/add", component: vGoodsAdd},
+
+                {path: "orders", component: vOrder},
 
                 {path: "staff", component: vStaff},
                 {path: "staff/add", component: vStaffAdd},

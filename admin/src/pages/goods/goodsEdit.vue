@@ -78,6 +78,7 @@
                 axios.post(api.goodsDetail, {id: self.product.id}).then(res => {
                     if (res.data.code === 1) {
                         self.product = res.data.data;
+                        self.product.num += "";
                     } else {
                         self.$message({
                             message: "网络错误，获取产品数据失败，请重试！",
@@ -126,13 +127,13 @@
                     let loading = self.$loading({fullscreen: true});
 
                     //提交
-                    axios.post(api.goodsAdd, self.product).then(res => {
+                    axios.post(api.goodsUpdate, self.product).then(res => {
                         loading.close();
 
                         if (res.data.code === 1) {
                             //保存成功弹出提示弹框
                             self.$message({
-                                message: "保存成功！",
+                                message: "修改成功！",
                                 type: "success"
                             });
 
@@ -148,7 +149,7 @@
                         loading.close();
 
                         self.$message({
-                            message: "保存失败，请重试！",
+                            message: "修改失败，请重试！",
                             type: "error"
                         });
                     })
