@@ -7,7 +7,7 @@
         <el-form :model="production" :rules="rules" :inline="true" ref="productionAdd" label-width="100px" class="form">
             <div class="fromRow">
                 <el-form-item label="产品" prop="goods_id">
-                    <el-input :value="goodsName" icon="search" @click="goodsDialogVisible = true" readonly></el-input>
+                    <el-input :value="goodsName" icon="search" @click="goodsSelectVisible = true" readonly></el-input>
                 </el-form-item>
 
                 <el-form-item label="数量" prop="num">
@@ -90,39 +90,15 @@
             </div>
         </el-form>
 
-        <!--选择产品弹框-->
-        <el-dialog title="选择产品" :visible.sync="goodsDialogVisible">
-            <el-form :inline="true">
-                <el-form-item label="搜索">
-                    <el-input v-model="search" placeholder="输入型号/类型/颜色"></el-input>
-                </el-form-item>
-            </el-form>
-
-            <el-table :data="goodsShows" height="400" style="width:100%">
-                <el-table-column prop="name" label="型号" align="center"></el-table-column>
-                <el-table-column prop="category" label="类型" align="center"></el-table-column>
-                <el-table-column prop="color" label="颜色" align="center"></el-table-column>
-                <el-table-column prop="num" label="库存" align="center"></el-table-column>
-                <el-table-column label="操作" align="center">
-                    <template scope="scope">
-                        <el-radio v-model="production.goods_id" :label="scope.row.id"></el-radio>
-                    </template>
-                </el-table-column>
-            </el-table>
-
-            <el-row>
-                <div class="dialogBtn">
-                    <el-button @click="goodsDialogVisible = false">取消</el-button>
-                    <el-button type="primary" @click="goodsDialogVisible = false">确定</el-button>
-                </div>
-            </el-row>
-        </el-dialog>
+        <!--选择商品弹框-->
+        <v-select-goods :visible.sync="goodsSelectVisible" @selectGoods="onSelectGoods"></v-select-goods>
     </div>
 </template>
 
 <script>
     import api from "../../common/js/api";
     import axios from "axios";
+    import vSelectGoods from "../../components/selectGoods.vue";
 
     export default{
         data(){
@@ -142,7 +118,6 @@
                     pack_id: "",
                     pack_price: ""
                 },
-
                 rules: {
                     goods_id: [{required: true, message: "请选择产品"}],
                     num: [
@@ -176,66 +151,20 @@
                         {type: "number", message: "请输入正确的价格"}
                     ]
                 },
-
-                goods: [],                          //产品列表
-                search: "",                         //搜索字段
-                goodsDialogVisible: false,          //选择商品弹框的状态
-
-                staff: {}                           //员工
+                goodsSelectVisible: false,          //选择商品弹框的状态
+                staff: {},                           //员工
+                goodsName: ""
             }
         },
 
-        computed: {
-            //符合搜索条件的产品
-            goodsShows(){
-                let self = this;
-
-                if (self.search === "") {
-                    return self.goods;
-                }
-
-                return self.goods.filter(item => {
-                    let reg = new RegExp(self.search, "g");
-                    return reg.test(item.name) || reg.test(item.color) || reg.test(item.category);
-                });
-            },
-
-            //选中的商品
-            goodsName(){
-                let self = this;
-
-                let selected = self.goods.find(item => {
-                    return item.id === self.production.goods_id;
-                });
-
-                if (selected) {
-                    return selected.name + " " + selected.category + " " + selected.color;
-                } else {
-                    return "";
-                }
-            }
+        components: {
+            vSelectGoods
         },
 
         methods: {
-            //获取商品列表
-            getGoods(){
-                let self = this;
-
-                axios.get(api.goodsList).then(res => {
-                    if (res.data.code === 1) {
-                        self.goods = res.data.data;
-                    } else {
-                        self.$message({
-                            message: "网络错误，加载产品失败，请重试！",
-                            type: "error"
-                        });
-                    }
-                }).catch(err => {
-                    self.$message({
-                        message: "网络错误，加载产品失败，请重试！",
-                        type: "error"
-                    });
-                })
+            onSelectGoods(val){
+                this.production.goods_id = val.goodsId;
+                this.goodsName = val.goodsName;
             },
 
             //获取所有员工
@@ -271,6 +200,7 @@
                 })
             },
 
+            //提交
             submit(){
                 let self = this;
 
@@ -279,13 +209,39 @@
                         return;
                     }
 
+                    //显示全屏Loading
+                    let loading = self.$loading({fullscreen: true});
 
+                    axios.post(api.productionAdd, self.production).then(res => {
+                        loading.close();
+
+                        if (res.data.code === 1) {
+                            self.$message({
+                                message: "保存成功！",
+                                type: "success"
+                            });
+
+                            //返回列表页
+                            self.$router.push("/production");
+                        } else {
+                            self.$message({
+                                message: "保存失败，请重试！",
+                                type: "error"
+                            });
+                        }
+                    }).catch(err => {
+                        loading.close();
+
+                        self.$message({
+                            message: "保存失败，请重试！",
+                            type: "error"
+                        });
+                    });
                 })
             }
         },
 
         mounted(){
-            this.getGoods();
             this.getStaff();
         }
     }
