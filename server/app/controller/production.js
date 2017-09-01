@@ -32,8 +32,14 @@ main.add = async function (ctx, next) {
     }
 };
 
+/**
+ * @desc 列表
+ */
 main.list = async function (ctx, next) {
     try {
+        let connection = await sql.pool();
+        let condition = ctx.request.body;
+
         let listSql = `
             SELECT production.id, goods.name, goods.color, category.category, production.num, production.date, 
                 cuter.name AS cuter_name, drill.name AS drill_name, sanding.name AS sanding_name, paste.name AS paste_name, 
@@ -48,12 +54,56 @@ main.list = async function (ctx, next) {
             JOIN staff AS pack ON production.pack_id = pack.id 
         `;
 
-        let list = await sql.query(listSql);
+        let countSql = `SELECT COUNT(id) AS totalNum FROM production `;
+
+        if (condition.goods_id) {
+            listSql += `WHERE goods_id = '${condition.goods_id}' `;
+            countSql += `WHERE goods_id = '${condition.goods_id}' `;
+
+            if (condition.startTime) {
+                listSql += `AND date >= '${condition.startTime}' AND date <= '${condition.endTime}' `;
+                countSql += `AND date >= '${condition.startTime}' AND date <= '${condition.endTime}' `
+            }
+        } else {
+            if (condition.startTime) {
+                listSql += `WHERE date >= '${condition.startTime}' AND date <= '${condition.endTime}' `;
+                countSql += `WHERE date >= '${condition.startTime}' AND date <= '${condition.endTime}' `
+            }
+        }
+
+        listSql += `
+            ORDER BY date DESC 
+            LIMIT ${(condition.page - 1) * condition.pageSize},${condition.page * condition.pageSize}
+        `;
+
+        let sqlData = await Promise.all([
+            sql.operate(listSql, connection),
+            sql.operate(countSql, connection)
+        ]);
+
+        connection.release();
 
         ctx.body = {
             code: 1,
             mes: "success",
-            data: list
+            data: sqlData[0],
+            totalNum: sqlData[1][0].totalNum
+        }
+    } catch (err) {
+        console.log(err);
+
+        ctx.body = {
+            code: 0,
+            mes: "操作失败"
+        }
+    }
+};
+
+main.update = async function (ctx, next) {
+    try {
+        ctx.body = {
+            code: 1,
+            mes: "success"
         }
     } catch (err) {
         console.log(err);

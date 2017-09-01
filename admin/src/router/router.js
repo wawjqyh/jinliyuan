@@ -15,6 +15,7 @@ import vStaffEdit from "../pages/staff/staffEdit.vue";
 
 import vProduction from "../pages/production/production.vue";
 import vProductionAdd from "../pages/production/productionAdd.vue";
+import vProductionEdit from "../pages/production/productionEdit.vue";
 
 Vue.use(Router);
 
@@ -26,6 +27,7 @@ export default new Router({
             children: [
                 {path: "/", component: vGoods},
                 {path: "goods/add", component: vGoodsAdd},
+                {path: "goods/edit/:goods_id", component: vGoodsEdit},
 
                 {path: "orders", component: vOrder},
 
@@ -35,7 +37,7 @@ export default new Router({
 
                 {path: "production", component: vProduction},
                 {path: "production/add", component: vProductionAdd},
-                {path: "production/edit/:goods_id", component: vGoodsEdit}
+                {path: "production/edit/:production_id", component: vProductionEdit}
             ]
         }
     ]

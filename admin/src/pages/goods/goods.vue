@@ -26,7 +26,7 @@
             <el-table-column prop="num" label="库存" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
                 <template scope="scope">
-                    <router-link :to="'production/edit/' + scope.row.id">
+                    <router-link :to="'goods/edit/' + scope.row.id">
                         <el-button size="small">修改</el-button>
                     </router-link>
                     <el-button type="danger" size="small" @click="deleteGoods(scope.row.id)">删除</el-button>

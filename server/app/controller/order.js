@@ -179,7 +179,7 @@ main.delete = async function (ctx, next) {
 
         //查询订单商品的sql语句
         let goodsSql = `
-            SELECT goods_id, num
+            SELECT goods_id, num 
             FROM order_goods 
             WHERE order_id = ${order_id}
         `;
