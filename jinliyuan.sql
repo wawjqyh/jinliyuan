@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-08-21 18:46:10
+Date: 2017-09-04 18:10:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -77,13 +77,13 @@ CREATE TABLE `goods` (
 -- ----------------------------
 -- Records of goods
 -- ----------------------------
-INSERT INTO `goods` VALUES ('1', '200', '白', '41', '1', '1');
+INSERT INTO `goods` VALUES ('1', '200', '白', '48', '1', '1');
 INSERT INTO `goods` VALUES ('2', '320', '红', '24', '2', '1');
 INSERT INTO `goods` VALUES ('3', '330', '黑', '56', '3', '1');
-INSERT INTO `goods` VALUES ('4', '890', '白', '343', '3', '1');
+INSERT INTO `goods` VALUES ('4', '890', '白', '344', '3', '1');
 INSERT INTO `goods` VALUES ('5', '355', '黄', '38', '2', '1');
 INSERT INTO `goods` VALUES ('6', '860', '红', '71', '2', '1');
-INSERT INTO `goods` VALUES ('7', '111', '蓝', '222', '1', '1');
+INSERT INTO `goods` VALUES ('7', '111', '蓝', '232', '1', '1');
 INSERT INTO `goods` VALUES ('8', '910', '灰色', '56', '2', '1');
 INSERT INTO `goods` VALUES ('9', '666', '黑', '60', '3', '1');
 
@@ -198,11 +198,13 @@ CREATE TABLE `production` (
   `pack_id` int(11) NOT NULL COMMENT '打包id',
   `pack_price` float NOT NULL COMMENT '打包单价',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of production
 -- ----------------------------
+INSERT INTO `production` VALUES ('4', '1', '6', '2017-08-30', '1', '1', '2', '1', '4', '1', '5', '1', '6', '1');
+INSERT INTO `production` VALUES ('6', '7', '10', '2017-09-04', '1', '2', '2', '2', '4', '2', '5', '2', '6', '2');
 
 -- ----------------------------
 -- Table structure for `staff`

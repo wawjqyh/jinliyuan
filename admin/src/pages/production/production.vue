@@ -149,6 +149,45 @@
             //页码改变
             handleCurrentChange(val){
                 this.getList();
+            },
+
+            //删除
+            deleteProduction(id){
+                let self = this;
+
+                //弹出确提示框
+                self.$confirm("是否删除", "提示", {type: "warning"}).then(() => {
+
+                    //显示全屏Loading
+                    let loading = self.$loading({fullscreen: true});
+
+                    axios.post(api.productionDelete, {id: id}).then(res => {
+                        loading.close();        //关闭Loading
+
+                        if (res.data.code === 1) {
+                            self.getList();         //重新获取产品列表
+
+                            self.$message({
+                                message: "删除成功！",
+                                type: "success"
+                            });
+                        } else {
+                            self.$message({
+                                message: "删除失败，请重试！",
+                                type: "error"
+                            });
+                        }
+                    }).catch(err => {
+                        loading.close();        //关闭Loading
+
+                        self.$message({
+                            message: "删除失败，请重试！",
+                            type: "error"
+                        });
+                    });
+                }).catch(() => {
+                    //取消
+                });
             }
         },
 

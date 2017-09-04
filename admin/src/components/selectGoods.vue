@@ -21,15 +21,14 @@
             <el-table-column prop="num" label="库存" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
                 <template scope="scope">
-                    <el-radio v-model="goodsIdTemp" :label="scope.row.id"></el-radio>
+                    <el-radio :value="goodsId" @input="onSelect" :label="scope.row.id"></el-radio>
                 </template>
             </el-table-column>
         </el-table>
 
         <el-row>
             <div class="dialogBtn">
-                <el-button @click="changeState(false)">取消</el-button>
-                <el-button type="primary" @click="confirmBtn">确定</el-button>
+                <el-button type="primary" @click="changeState(false)">确定</el-button>
             </div>
         </el-row>
     </el-dialog>
@@ -40,13 +39,12 @@
     import axios from "axios";
 
     export default{
-        props: ["visible"],                         //弹框的状态
+        props: ["visible", "goodsId", "goodsName"],                         //弹框的状态
 
         data(){
             return {
                 goods: [],                          //产品列表
-                search: "",                         //搜索字段
-                goodsIdTemp: ""                     //组件内部的商品id
+                search: ""                          //搜索字段
             }
         },
 
@@ -63,21 +61,12 @@
                     let reg = new RegExp(self.search, "g");
                     return reg.test(item.name) || reg.test(item.color) || reg.test(item.category);
                 });
-            },
+            }
+        },
 
-            //根据id返回商品的信息
-            goodsName(){
-                let self = this;
-
-                let selected = self.goods.find(item => {
-                    return item.id === self.goodsIdTemp;
-                });
-
-                if (selected) {
-                    return selected.name + " " + selected.category + " " + selected.color;
-                } else {
-                    return "";
-                }
+        watch: {
+            goodsId(id){
+                this.$emit("update:goodsName", this.getGoodsName(id));
             }
         },
 
@@ -108,16 +97,24 @@
                 this.$emit("update:visible", visible);
             },
 
-            //点击确认按钮，触发selectGoods事件，将goodsId和goodsName传递出去
-            confirmBtn(){
+            //选择某个产品
+            onSelect(id){
+                this.$emit("update:goodsId", id);
+            },
+
+            //根据id返回商品的信息
+            getGoodsName(id){
                 let self = this;
 
-                self.changeState(false);
+                let selected = self.goods.find(item => {
+                    return item.id === id;
+                });
 
-                self.$emit("selectGoods", {
-                    goodsId: self.goodsIdTemp,
-                    goodsName: self.goodsName
-                })
+                if (selected) {
+                    return selected.name + " " + selected.category + " " + selected.color;
+                } else {
+                    return "";
+                }
             }
         },
 

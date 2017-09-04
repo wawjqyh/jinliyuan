@@ -91,7 +91,8 @@
         </el-form>
 
         <!--选择商品弹框-->
-        <v-select-goods :visible.sync="goodsSelectVisible" @selectGoods="onSelectGoods"></v-select-goods>
+        <v-select-goods :visible.sync="goodsSelectVisible" :goodsId.sync="production.goods_id"
+                        :goodsName.sync="goodsName" @selectGoods="onSelectGoods"></v-select-goods>
     </div>
 </template>
 
@@ -102,8 +103,11 @@
 
     export default{
         data(){
+            let self = this;
+
             return {
                 production: {
+                    id: self.$route.params.production_id,
                     goods_id: "",
                     num: "",
                     date: "",
@@ -162,6 +166,26 @@
         },
 
         methods: {
+            getDetail(){
+                let self = this;
+
+                axios.post(api.productionDetail, {id: self.production.id}).then(res => {
+                    if (res.data.code === 1) {
+                        self.production = res.data.data;
+                    } else {
+                        self.$message({
+                            message: "网络错误，获取派工单数据失败，请重试！",
+                            type: "error"
+                        });
+                    }
+                }).catch(err => {
+                    self.$message({
+                        message: "网络错误，获取派工单数据失败，请重试！",
+                        type: "error"
+                    });
+                })
+            },
+
             onSelectGoods(val){
                 this.production.goods_id = val.goodsId;
                 this.goodsName = val.goodsName;
@@ -242,6 +266,7 @@
         },
 
         mounted(){
+            this.getDetail();
             this.getStaff();
         }
     }

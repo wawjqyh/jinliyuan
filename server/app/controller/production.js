@@ -101,9 +101,69 @@ main.list = async function (ctx, next) {
 
 main.update = async function (ctx, next) {
     try {
+        let connection = await sql.pool();
+        let production = ctx.request.body;
+        let upPro = await sql.operate(`SELECT goods_id, num FROM production WHERE id = ${production.id}`, connection);
+        let num = production.num - upPro[0].num;
+        let updateProductionSql = `
+        `;
+
+        await Promise.all([
+            sql.operate(``, connection),
+        ]);
+
         ctx.body = {
             code: 1,
             mes: "success"
+        }
+    } catch (err) {
+        console.log(err);
+
+        ctx.body = {
+            code: 0,
+            mes: "操作失败"
+        }
+    }
+};
+
+main.delete = async function (ctx, next) {
+    try {
+        let connection = await sql.pool();
+        let id = ctx.request.body.id;
+
+        let production = await sql.operate(`SELECT goods_id, num FROM production WHERE id = ${id}`, connection);
+
+        await Promise.all([
+            sql.operate(`UPDATE goods SET num = num - ${production[0].num} WHERE id = ${production[0].goods_id}`, connection),
+            sql.operate(`DELETE FROM production WHERE id = ${id}`, connection)
+        ]);
+
+        connection.release();
+
+        ctx.body = {
+            code: 1,
+            mes: "success"
+        }
+    } catch (err) {
+        console.log(err);
+
+        ctx.body = {
+            code: 0,
+            mes: "操作失败"
+        }
+    }
+};
+
+main.detail = async function (ctx, next) {
+    try {
+        let id = ctx.request.body.id;
+
+        let production = await sql.query(`SELECT * FROM production WHERE id = ${id}`);
+
+        ctx.body = {
+            code: 1,
+            mes: "success",
+            data: production[0]
         }
     } catch (err) {
         console.log(err);
