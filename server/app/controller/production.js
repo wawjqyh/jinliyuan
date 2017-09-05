@@ -106,11 +106,22 @@ main.update = async function (ctx, next) {
         let upPro = await sql.operate(`SELECT goods_id, num FROM production WHERE id = ${production.id}`, connection);
         let num = production.num - upPro[0].num;
         let updateProductionSql = `
+            UPDATE production 
+            SET goods_id = '${production.goods_id}', num = '${production.num}', date = '${production.date}', cuter_id = '${production.cuter_id}', 
+            cut_price = '${production.cut_price}', drill_id = '${production.drill_id}', drill_price = '${production.drill_price}', 
+            sanding_id = '${production.sanding_id}', sanding_price = '${production.sanding_price}', paste_id = '${production.paste_id}', 
+            paste_price = '${production.paste_price}', pack_id = '${production.pack_id}', pack_price = '${production.pack_price}'
+            WHERE id = '${production.id}'
         `;
 
+        console.log(updateProductionSql);
+
         await Promise.all([
-            sql.operate(``, connection),
+            sql.operate(updateProductionSql, connection),
+            sql.operate(`UPDATE goods SET num = num + ${num}`, connection)
         ]);
+
+        connection.release();
 
         ctx.body = {
             code: 1,

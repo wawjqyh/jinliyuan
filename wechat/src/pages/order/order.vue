@@ -3,9 +3,9 @@
         <div class="searchRow">
             <span>
                 <span>日期：</span>
-                <span v-show="postData.date.length == 0">全部</span>
-                <span v-show="postData.date.length == 1">{{postData.date[0]}}</span>
-                <span v-show="postData.date.length == 2">{{postData.date[0]}} — {{postData.date[1]}}</span>
+                <span v-show="dateClass == 'all'">全部</span>
+                <span v-show="dateClass == 'someday'">{{postData.startTime}}</span>
+                <span v-show="dateClass == 'days'">{{postData.startTime}} — {{postData.endTime}}</span>
             </span>
             <span class="screenBtn" @click="filterBoxState = true"><i class="fa fa-filter"></i> 筛选</span>
         </div>
@@ -90,7 +90,9 @@
 
                 postData: {
                     page: 1,
-                    date: []
+                    pageSize: 10,
+                    startTime: "",
+                    endTime: ""
                 },
 
                 pickerDate1: "",                    //日期插件配置
@@ -111,7 +113,8 @@
                     self.pickerDate2 = "";
                     self.pickerDate3 = "";
                     self.dateClass = "someday";
-                    self.postData.date = [val];
+                    self.postData.startTime = val;
+                    self.postData.endTime = val;
 
                     self.loadData();
                 }
@@ -124,7 +127,8 @@
                     self.postData.page = 1;
                     self.pickerDate1 = "";
                     self.dateClass = "days";
-                    self.postData.date = [self.pickerDate2, self.pickerDate3];
+                    self.postData.startTime = self.pickerDate2;
+                    self.postData.endTime = self.pickerDate3;
 
                     self.loadData();
                 }
@@ -137,7 +141,8 @@
                     self.postData.page = 1;
                     self.pickerDate1 = "";
                     self.dateClass = "days";
-                    self.postData.date = [self.pickerDate2, self.pickerDate3];
+                    self.postData.startTime = self.pickerDate2;
+                    self.postData.endTime = self.pickerDate3;
 
                     self.loadData();
                 }
@@ -154,7 +159,8 @@
             selectAll(){
                 let self = this;
                 self.dateClass = "all";
-                self.postData.date = [];
+                self.postData.startTime = "";
+                self.postData.endTime = "";
                 self.pickerDate1 = "";
                 self.pickerDate2 = "";
                 self.pickerDate3 = "";
@@ -186,7 +192,7 @@
                                 self.orderList = self.orderList.concat(res.data.data);
                             }
 
-                            if (res.data.data.length >= 20) {
+                            if (res.data.data.length >= self.postData.pageSize) {
                                 self.canLoad = true;
                             }
                         } else {

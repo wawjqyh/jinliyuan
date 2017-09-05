@@ -8,46 +8,48 @@ let main = {};
  */
 main.list = async function (ctx, next) {
     try {
-        let page = ctx.request.body.page;
-        let date = ctx.request.body.date;
-        let pageSize = 20;
+        let connection = await sql.pool();
+        let condition = ctx.request.body;
 
         //查询订单列表的sql语句，按日期查询
-        let sqlCon = `
+        let querySql = `
             SELECT orders.id, order_id, deliver_date, delivery_address, delivery_state, order_date, total_money, customer_id, username, phone 
-            FROM orders LEFT JOIN customer 
-            ON orders.customer_id = customer.id 
+            FROM orders 
+            LEFT JOIN customer ON orders.customer_id = customer.id 
         `;
 
-        //日期为单个日期
-        if (date.length === 1) {
-            sqlCon += `WHERE order_date = '${date[0]}'`;
-        }
+        let countSql = `SELECT COUNT(id) AS totalNum FROM orders `;
 
-        //日期为一个区间
-        if (date.length === 2) {
-            if (date[1] === "") {
-                sqlCon += `WHERE order_date >= '${date[0]}'`;
-            } else if (date[0] === "") {
-                sqlCon += `WHERE order_date <= '${date[1]}'`;
-            } else {
-                sqlCon += `WHERE order_date >= '${date[0]}' AND order_date <= '${date[1]}'`;
-            }
+        if (condition.startTime && condition.endTime) {
+            querySql += `WHERE order_date >= '${condition.startTime}' AND order_date <= '${condition.endTime}' `;
+            countSql += `WHERE order_date >= '${condition.startTime}' AND order_date <= '${condition.endTime}' `;
+        } else if (condition.startTime) {
+            querySql += `WHERE order_date >= '${condition.startTime}' `;
+            countSql += `WHERE order_date >= '${condition.startTime}' `;
+        } else if (condition.endTime) {
+            querySql += `WHERE order_date <= '${condition.endTime}' `;
+            countSql += `WHERE order_date <= '${condition.endTime}' `;
         }
 
         //分页
-        sqlCon += `
+        querySql += `
             ORDER BY order_id DESC 
-            LIMIT ${(page - 1) * pageSize},${page * pageSize}
+            LIMIT ${(condition.page - 1) * condition.pageSize},${condition.page * condition.pageSize}
         `;
 
         //操作数据库
-        let data = await sql.query(sqlCon);
+        let sqlData = await Promise.all([
+            sql.operate(querySql, connection),
+            sql.operate(countSql, connection)
+        ]);
+
+        connection.release();
 
         ctx.body = {
             code: 1,
             mes: "success",
-            data: data
+            data: sqlData[0],
+            totalNum: sqlData[1][0].totalNum
         }
     }
 

@@ -91,7 +91,8 @@
         </el-form>
 
         <!--选择商品弹框-->
-        <v-select-goods :visible.sync="goodsSelectVisible" @selectGoods="onSelectGoods"></v-select-goods>
+        <v-select-goods :visible.sync="goodsSelectVisible" :goodsId.sync="production.goods_id"
+                        :goodsName.sync="goodsName"></v-select-goods>
     </div>
 </template>
 
@@ -208,6 +209,8 @@
                     if (!valid) {
                         return;
                     }
+
+                    self.production.date=self.production.date.toLocaleDateString();
 
                     //显示全屏Loading
                     let loading = self.$loading({fullscreen: true});

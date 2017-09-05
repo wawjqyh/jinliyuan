@@ -92,7 +92,7 @@
 
         <!--选择商品弹框-->
         <v-select-goods :visible.sync="goodsSelectVisible" :goodsId.sync="production.goods_id"
-                        :goodsName.sync="goodsName" @selectGoods="onSelectGoods"></v-select-goods>
+                        :goodsName.sync="goodsName"></v-select-goods>
     </div>
 </template>
 
@@ -186,11 +186,6 @@
                 })
             },
 
-            onSelectGoods(val){
-                this.production.goods_id = val.goodsId;
-                this.goodsName = val.goodsName;
-            },
-
             //获取所有员工
             getStaff(){
                 let self = this;
@@ -233,10 +228,12 @@
                         return;
                     }
 
+                    self.production.date=self.production.date.toLocaleDateString();
+
                     //显示全屏Loading
                     let loading = self.$loading({fullscreen: true});
 
-                    axios.post(api.productionAdd, self.production).then(res => {
+                    axios.post(api.productionUpdate, self.production).then(res => {
                         loading.close();
 
                         if (res.data.code === 1) {

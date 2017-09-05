@@ -18,5 +18,7 @@ export default {
     productionAdd: baseUrl + "/production/add",
     productionDelete: baseUrl + "/production/delete",
     productionDetail: baseUrl + "/production/detail",
-    productionUpdate: baseUrl + "/production/update"
+    productionUpdate: baseUrl + "/production/update",
+
+    order: baseUrl + "/order"
 }

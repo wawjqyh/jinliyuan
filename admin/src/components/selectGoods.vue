@@ -61,12 +61,26 @@
                     let reg = new RegExp(self.search, "g");
                     return reg.test(item.name) || reg.test(item.color) || reg.test(item.category);
                 });
+            },
+
+            goodsNameTemp(){
+                let self = this;
+
+                let selected = self.goods.find(item => {
+                    return item.id === self.goodsId;
+                });
+
+                if (selected) {
+                    return selected.name + " " + selected.category + " " + selected.color;
+                } else {
+                    return "";
+                }
             }
         },
 
         watch: {
-            goodsId(id){
-                this.$emit("update:goodsName", this.getGoodsName(id));
+            goodsNameTemp(goodsName){
+                this.$emit("update:goodsName", goodsName);
             }
         },
 
@@ -100,21 +114,6 @@
             //选择某个产品
             onSelect(id){
                 this.$emit("update:goodsId", id);
-            },
-
-            //根据id返回商品的信息
-            getGoodsName(id){
-                let self = this;
-
-                let selected = self.goods.find(item => {
-                    return item.id === id;
-                });
-
-                if (selected) {
-                    return selected.name + " " + selected.category + " " + selected.color;
-                } else {
-                    return "";
-                }
             }
         },
 

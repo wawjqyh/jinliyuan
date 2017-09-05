@@ -59,7 +59,8 @@
             </el-pagination>
         </div>
 
-        <v-select-goods :visible.sync="goodsSelectVisible" @selectGoods="onSelectGoods"></v-select-goods>
+        <v-select-goods :visible.sync="goodsSelectVisible" :goodsId.sync="condition.goods_id"
+                        :goodsName.sync="goodsName"></v-select-goods>
     </div>
 </template>
 
@@ -126,12 +127,6 @@
                         type: "error"
                     });
                 });
-            },
-
-            //选择产品完成事件
-            onSelectGoods(val){
-                this.condition.goods_id = val.goodsId;
-                this.goodsName = val.goodsName;
             },
 
             //删除派工单
