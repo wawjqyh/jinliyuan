@@ -19,13 +19,19 @@
         <!--列表-->
         <el-table :data="orders" style="width:100%" v-loading="loading">
             <el-table-column prop="username" label="客户"></el-table-column>
-            <el-table-column prop="phone" label="手机号"></el-table-column>
-            <el-table-column prop="order_date" label="下单日期"></el-table-column>
-            <el-table-column prop="total_money" label="总价"></el-table-column>
+            <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
+            <el-table-column prop="order_date" label="下单日期" align="center"></el-table-column>
+            <el-table-column prop="total_money" label="总价" align="center"></el-table-column>
             <el-table-column prop="delivery_address" label="送货地址"></el-table-column>
-            <el-table-column label="状态">
+            <el-table-column label="状态" align="center">
                 <template scope="scope">
-                    <span v-if="scope.row.delivery_state = 0">未送货</span>
+                    <span v-if="scope.row.delivery_state == 0">未发货</span>
+                    <span v-if="scope.row.delivery_state == 1">已发货</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作" align="center">
+                <template scope="scope">
+                    <el-button size="small">查看</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -42,6 +48,10 @@
                 :total="totalNum">
             </el-pagination>
         </div>
+
+        //商品详情
+        <el-dialog title="选择产品" :visible.sync="goodsDetailVisible">
+        </el-dialog>
     </div>
 </template>
 
@@ -81,6 +91,7 @@
                 orders: [],                               //订单列表
                 totalNum: 0,                              //订单总数
                 loading: false,                          //loading遮罩层的状态
+                goodsDetailVisible: false,               //商品详情弹框的状态
             }
         },
 
@@ -130,7 +141,7 @@
             },
 
             //分页数量改变
-            handleSizeChange(){
+            handleSizeChange(val){
                 let self = this;
                 self.condition.pageSize = val;
                 self.getList();
