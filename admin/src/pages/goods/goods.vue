@@ -1,5 +1,5 @@
 <template>
-    <div class="stock">
+    <div class="goods">
         <el-breadcrumb separator="/" class="position">
             <el-breadcrumb-item>报表</el-breadcrumb-item>
             <el-breadcrumb-item>库存</el-breadcrumb-item>

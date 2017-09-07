@@ -10,7 +10,7 @@
             <el-submenu index="2">
                 <template slot="title"><i class="el-icon-document"></i>销售</template>
                 <el-menu-item index="/orders">订单记录</el-menu-item>
-                <el-menu-item index="2-2">客户</el-menu-item>
+                <el-menu-item index="/customer">客户</el-menu-item>
             </el-submenu>
             <el-submenu index="/staff">
                 <template slot="title"><i class="el-icon-setting"></i>生产</template>

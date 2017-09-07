@@ -31,7 +31,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template scope="scope">
-                    <el-button size="small">查看</el-button>
+                    <el-button size="small" @click="showDetails(scope.row.order_id)">查看</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -49,8 +49,47 @@
             </el-pagination>
         </div>
 
-        //商品详情
-        <el-dialog title="选择产品" :visible.sync="goodsDetailVisible">
+        <!--商品详情-->
+        <el-dialog title="订单详情" :visible.sync="goodsDetailVisible">
+            <div class="dialogOrderMes">
+                <el-row>
+                    <el-col :span="12">下单时间：{{orderDetail.order_date}}</el-col>
+                    <el-col :span="12">
+                        <span>状 &nbsp; &nbsp; &nbsp; 态：</span>
+                        <span v-if="orderDetail.delivery_state == 0" class="textDanger">未发货</span>
+                        <span v-if="orderDetail.delivery_state == 1">已发货</span>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="12">客户姓名：{{orderDetail.username}}</el-col>
+                    <el-col :span="12">手 机 &nbsp;号：{{orderDetail.phone}}</el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="24">客户地址：{{orderDetail.province}} - {{orderDetail.city}} - {{orderDetail.district}}
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="12">送货地址：{{orderDetail.delivery_address}}</el-col>
+                    <el-col :span="12">送货时间：{{orderDetail.deliver_date}}</el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="24">备 &nbsp; &nbsp; &nbsp;注：{{orderDetail.remarks}}</el-col>
+                </el-row>
+            </div>
+
+            <div class="dialogGoodsList">
+                <h3>订单商品</h3>
+
+                <el-table :data="orderGoods" style="width:100%">
+                    <el-table-column prop="name" label="型号" align="center"></el-table-column>
+                    <el-table-column prop="category" label="类型" align="center"></el-table-column>
+                    <el-table-column prop="color" label="颜色" align="center"></el-table-column>
+                    <el-table-column prop="price" label="价格" align="center"></el-table-column>
+                    <el-table-column prop="num" label="数量" align="center"></el-table-column>
+                </el-table>
+
+                <div class="totalMes">共 {{goodsNum}} 件商品 &nbsp; 合计：￥{{orderDetail.total_money}}</div>
+            </div>
         </el-dialog>
     </div>
 </template>
@@ -92,6 +131,21 @@
                 totalNum: 0,                              //订单总数
                 loading: false,                          //loading遮罩层的状态
                 goodsDetailVisible: false,               //商品详情弹框的状态
+                orderDetail: {},                          //订单详情
+                orderGoods: [],                           //订单商品
+            }
+        },
+
+        computed: {
+            //商品总数
+            goodsNum(){
+                let total = 0;
+
+                this.orderGoods.forEach(item => {
+                    total += item.num;
+                });
+
+                return total;
             }
         },
 
@@ -150,6 +204,30 @@
             //页码改变
             handleCurrentChange(){
                 this.getList();
+            },
+
+            showDetails(order_id){
+                let self = this;
+
+                axios.post(api.orderDetail, {order_id: order_id}).then(res => {
+                    if (res.data.code === 1) {
+                        console.log(res.data.data);
+                        self.orderDetail = res.data.data.order[0];
+                        self.orderGoods = res.data.data.goods;
+
+                        self.goodsDetailVisible = true;
+                    } else {
+                        self.$message({
+                            message: "获取订单失败",
+                            type: "error"
+                        });
+                    }
+                }).catch(err => {
+                    self.$message({
+                        message: "获取订单失败",
+                        type: "error"
+                    });
+                })
             }
         },
 
@@ -160,5 +238,15 @@
 </script>
 
 <style lang="less">
+    .orders {
+        .dialogOrderMes {
+            line-height: 20px;
+        }
 
+        .totalMes {
+            line-height: 20px;
+            margin-top: 10px;
+            text-align: right;
+        }
+    }
 </style>

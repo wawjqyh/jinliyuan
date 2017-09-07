@@ -14,7 +14,7 @@ module.exports = {
     },
     dev: {
         env: require('./dev.env'),
-        port: 3100,
+        port: 3002,
         autoOpenBrowser: true,
         assetsSubDirectory: 'static',   //静态资源目录
         assetsPublicPath: '/',

@@ -20,5 +20,8 @@ export default {
     productionDetail: baseUrl + "/production/detail",
     productionUpdate: baseUrl + "/production/update",
 
-    order: baseUrl + "/order"
+    order: baseUrl + "/order",
+    orderDetail: baseUrl + "/order/detail",
+
+    customerList: baseUrl + "/customer",
 }

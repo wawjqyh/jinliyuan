@@ -9,6 +9,8 @@ import vGoodsEdit from "../pages/goods/goodsEdit.vue";
 
 import vOrder from "../pages/orders/orders.vue";
 
+import vCustomer from "../pages/customer/customer.vue";
+
 import vStaff from "../pages/staff/staff.vue";
 import vStaffAdd from "../pages/staff/staffAdd.vue";
 import vStaffEdit from "../pages/staff/staffEdit.vue";
@@ -30,6 +32,8 @@ export default new Router({
                 {path: "goods/edit/:goods_id", component: vGoodsEdit},
 
                 {path: "orders", component: vOrder},
+
+                {path: "customer", component: vCustomer},
 
                 {path: "staff", component: vStaff},
                 {path: "staff/add", component: vStaffAdd},
