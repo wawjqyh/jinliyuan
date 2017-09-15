@@ -5,6 +5,8 @@ export default {
     jobList: baseUrl + "/staff/job",
     staffAdd: baseUrl + "/staff/add",
     staffDelete: baseUrl + "/staff/delete",
+    staffDetail: baseUrl + "/staff/detail",
+    staffUpdate: baseUrl + "/staff/update",
 
     category: baseUrl + "/goods/category",
 
@@ -24,4 +26,5 @@ export default {
     orderDetail: baseUrl + "/order/detail",
 
     customerList: baseUrl + "/customer",
+    customerDetail: baseUrl + "/customer/detail"
 }

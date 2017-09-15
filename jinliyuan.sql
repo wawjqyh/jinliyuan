@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-09-05 18:08:48
+Date: 2017-09-15 17:28:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -225,6 +225,6 @@ CREATE TABLE `staff` (
 INSERT INTO `staff` VALUES ('1', '员工1', '12300000000', '1', '1');
 INSERT INTO `staff` VALUES ('2', '员工2', '12311111111', '2', '1');
 INSERT INTO `staff` VALUES ('3', 'test', '12300000000', '1', '0');
-INSERT INTO `staff` VALUES ('4', 'test2', '13700000000', '3', '1');
+INSERT INTO `staff` VALUES ('4', 'test2', '13700000001', '3', '1');
 INSERT INTO `staff` VALUES ('5', 'test3', '13811111111', '4', '1');
 INSERT INTO `staff` VALUES ('6', 'test4', '13866666666', '5', '1');

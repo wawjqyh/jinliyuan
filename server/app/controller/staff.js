@@ -102,4 +102,57 @@ main.delete = async function (ctx, next) {
     }
 };
 
+/**
+ * @desc 根据id查询员工信息
+ */
+main.detail = async function (ctx, next) {
+    try {
+        let id = ctx.request.body.id;
+
+        let data = await sql.query(`SELECT * FROM staff WHERE id = ${id}`);
+
+        ctx.body = {
+            code: 1,
+            mes: "success",
+            data: data[0]
+        }
+    } catch (err) {
+        console.log(err);
+
+        ctx.body = {
+            code: 0,
+            mes: "操作失败"
+        }
+    }
+};
+
+/**
+ * @desc 更新员工信息
+ */
+main.update = async function (ctx, next) {
+    try {
+        let data = ctx.request.body;
+
+        let updataStaffSql = `
+            UPDATE staff 
+            SET name = "${data.name}", phone = "${data.phone}", job_id = ${data.job_id} 
+            WHERE id = ${data.id}
+        `;
+
+        await sql.query(updataStaffSql);
+
+        ctx.body = {
+            code: 1,
+            mes: "success"
+        }
+    } catch (err) {
+        console.log(err);
+
+        ctx.body = {
+            code: 0,
+            mes: "操作失败"
+        }
+    }
+};
+
 module.exports = main;

@@ -10,19 +10,19 @@
             </el-form-item>
 
             <el-form-item label="电话" prop="phone">
-                <el-input v-model.number="staff.phone"></el-input>
+                <el-input v-model="staff.phone"></el-input>
             </el-form-item>
 
             <el-form-item label="职位" prop="job_id">
                 <el-select v-model="staff.job_id" placeholder="请选择">
-                    <el-option v-for="item in job" :label="item.job" :value="item.id" :key="item.id">
+                    <el-option v-for="item in job" :label="item.job_name" :value="item.id" :key="item.id">
                     </el-option>
                 </el-select>
             </el-form-item>
 
             <el-form-item>
                 <el-button type="primary" @click="submit">提交</el-button>
-                <el-button>返回</el-button>
+                <el-button @click="$router.go(-1)">返回</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -34,9 +34,21 @@
 
     export default{
         data(){
+            let self = this;
+
+            //验证手机号
+            let validatePhone = function (rule, value, callback) {
+                if (!/^\d{11}$/.test(value)) {
+                    callback(new Error("请输入正确的手机号"))
+                } else {
+                    callback();
+                }
+            };
+
             return {
                 job: [],                //职位列表
                 staff: {                 //表单字段
+                    id: self.$route.params.staff_id,
                     name: "",
                     phone: "",
                     job_id: ""
@@ -44,8 +56,8 @@
                 rules: {                //表单验证规则
                     name: [{required: true, message: "请输入姓名"}],
                     phone: [
-                        {required: true, message: "请输入手机号"},
-                        {type: "number", min: 10000000000, max: 99999999999, message: "请输入正确的手机号"}
+                        {required: true, message: "请输入手机号", trigger: "blur"},
+                        {validator: validatePhone, trigger: "blur"}
                     ],
                     job_id: [{required: true, message: "请选择职位"}]
                 }
@@ -73,6 +85,26 @@
                 })
             },
 
+            //获取员工详情
+            getStaffList(){
+                let self = this;
+                axios.post(api.staffDetail, {id: self.staff.id}).then(res => {
+                    if (res.data.code === 1) {
+                        self.staff = res.data.data;
+                    } else {
+                        self.$message({
+                            message: "网络错误，获取员工详情失败，请重试！",
+                            type: "error"
+                        });
+                    }
+                }).catch(err => {
+                    self.$message({
+                        message: "网络错误，获取员工详情失败，请重试！",
+                        type: "error"
+                    });
+                })
+            },
+
             submit(){
                 let self = this;
 
@@ -85,13 +117,13 @@
                     //显示全屏Loading
                     let loading = self.$loading({fullscreen: true});
 
-                    axios.post(api.staffAdd, self.staff).then(res => {
+                    axios.post(api.staffUpdate, self.staff).then(res => {
                         loading.close();
 
                         if (res.data.code === 1) {
                             //保存成功弹出提示弹框
                             self.$message({
-                                message: "保存成功！",
+                                message: "修改成功！",
                                 type: "success"
                             });
 
@@ -99,7 +131,7 @@
                             self.$router.push("/staff");
                         } else {
                             self.$message({
-                                message: "保存失败，请重试！",
+                                message: "修改成功，请重试！",
                                 type: "error"
                             });
                         }
@@ -117,6 +149,7 @@
 
         mounted(){
             this.getJobList();
+            this.getStaffList();
         }
     }
 </script>

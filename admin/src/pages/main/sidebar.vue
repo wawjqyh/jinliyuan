@@ -1,6 +1,6 @@
 <template>
     <el-col :span="4" class="sidebar">
-        <el-menu class="sidebarMenu" :default-active="$route.path" theme="dark" :router="true">
+        <el-menu class="sidebarMenu" :default-active="$route.path" theme="dark" :router="true" :unique-opened="true">
             <el-submenu index="1">
                 <template slot="title"><i class="el-icon-menu"></i>报表</template>
                 <el-menu-item index="/">库存</el-menu-item>
@@ -12,7 +12,7 @@
                 <el-menu-item index="/orders">订单记录</el-menu-item>
                 <el-menu-item index="/customer">客户</el-menu-item>
             </el-submenu>
-            <el-submenu index="/staff">
+            <el-submenu index="3">
                 <template slot="title"><i class="el-icon-setting"></i>生产</template>
                 <el-menu-item index="/staff" :route="{path: '/staff'}">员工</el-menu-item>
                 <el-menu-item index="/production" :route="{path: '/production'}">派工单</el-menu-item>

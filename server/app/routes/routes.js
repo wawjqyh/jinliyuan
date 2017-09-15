@@ -33,6 +33,8 @@ router.get("/api/staff", staff.list);                       //员工列表
 router.get("/api/staff/job", staff.jobList);                //职位列表
 router.post("/api/staff/add", staff.add);                   //新增员工
 router.post("/api/staff/delete", staff.delete);             //删除员工
+router.post("/api/staff/detail", staff.detail);             //员工详情
+router.post("/api/staff/update", staff.update);             //更新员工信息
 
 router.post("/api/production", production.list);            //派工单列表
 router.post("/api/production/add", production.add);         //新增派工单
