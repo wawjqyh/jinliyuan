@@ -18,6 +18,8 @@ import vCustomerEdit from "../pages/customer/customerEdit.vue";
 
 import vReport from "../pages/report/report.vue";
 
+import vDelivery from "../pages/deliveryNote/deliveryNote.vue";
+
 Vue.use(Router);
 
 export default new Router({
@@ -40,6 +42,7 @@ export default new Router({
 
         {path: "/orderAdd", component: vOrderAdd},
         {path: "/orderDetail/:order_id", component: vOrderDetail},
-        {path: "/orderEdit/:order_id", component: vOrderEdit}
+        {path: "/orderEdit/:order_id", component: vOrderEdit},
+        {path: "/delivery", component: vDelivery}
     ]
 });

@@ -17,5 +17,7 @@ export default {
     orderInsert: baseUrl + "/order/new",
     orderDetail: baseUrl + "/order/detail",
     orderDelete: baseUrl + "/order/delete",
-    orderUpdate: baseUrl + "/order/update"
+    orderUpdate: baseUrl + "/order/update",
+
+    delivery: baseUrl + "/delivery"
 }

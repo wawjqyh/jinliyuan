@@ -6,6 +6,7 @@ let goods = require("../controller/goods");
 let order = require("../controller/order");
 let staff = require("../controller/staff");
 let production = require("../controller/production");
+let delivery = require("../controller/delivery");
 
 router.get("/api/index", index.index);                      //首页
 
@@ -41,5 +42,7 @@ router.post("/api/production/add", production.add);         //新增派工单
 router.post("/api/production/delete", production.delete);   //删除派工单
 router.post("/api/production/update", production.update);   //更新派工单
 router.post("/api/production/detail", production.detail);   //单个派工单详情
+
+router.get("/api/delivery", delivery.delivery);            //送货单
 
 module.exports = router;

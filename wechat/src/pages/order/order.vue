@@ -219,7 +219,7 @@
     .order {
         .searchRow {
             padding: 0.15rem 0.3rem;
-            background-color: #31bfcf;
+            background-color: @mainColor;
             box-sizing: border-box;
             height: 0.8rem;
             line-height: 0.5rem;

@@ -16,7 +16,7 @@ main.index = async function (ctx, next) {
             LEFT JOIN order_goods ON orders.order_id = order_goods.order_id 
             LEFT JOIN goods ON order_goods.goods_id = goods.id 
             LEFT JOIN category ON goods.category_id = category.id 
-            WHERE order_date >= ${month}
+            WHERE order_date >= "${month}"
         `;
 
         let orderSql = `
