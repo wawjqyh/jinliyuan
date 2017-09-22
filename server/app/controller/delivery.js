@@ -48,4 +48,24 @@ main.delivery = async function (ctx, next) {
     }
 };
 
+main.finish = async function (ctx, next) {
+    try {
+        let id = ctx.request.body.order_id;
+
+        await sql.query(`UPDATE orders SET delivery_state = 1 WHERE order_id = ${id}`);
+
+        ctx.body = {
+            code: 1,
+            mes: "success"
+        }
+    } catch (err) {
+        console.log(err);
+
+        ctx.body = {
+            code: 0,
+            mes: "操作失败"
+        }
+    }
+};
+
 module.exports = main;

@@ -43,6 +43,7 @@ router.post("/api/production/delete", production.delete);   //删除派工单
 router.post("/api/production/update", production.update);   //更新派工单
 router.post("/api/production/detail", production.detail);   //单个派工单详情
 
-router.get("/api/delivery", delivery.delivery);            //送货单
+router.get("/api/delivery", delivery.delivery);             //送货单
+router.post("/api/delivery/finish", delivery.finish);       //送货完成
 
 module.exports = router;
