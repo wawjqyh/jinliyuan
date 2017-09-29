@@ -1,11 +1,13 @@
 <template>
     <div class="productionAdd">
-        <div class="position"><b>位置：</b>生产 <span class="el-icon-arrow-right"></span> 派工单 <span
-            class="el-icon-arrow-right"></span> 新增
-        </div>
+        <el-breadcrumb separator="/" class="position">
+            <el-breadcrumb-item>生产</el-breadcrumb-item>
+            <el-breadcrumb-item>派工单</el-breadcrumb-item>
+            <el-breadcrumb-item>新增</el-breadcrumb-item>
+        </el-breadcrumb>
 
-        <el-form :model="production" :rules="rules" :inline="true" ref="productionAdd" label-width="100px" class="form">
-            <div class="fromRow">
+        <el-form :model="production" :rules="rules" :inline="true" ref="productionAdd" label-width="100px" class="formInline">
+            <div>
                 <el-form-item label="产品" prop="goods_id">
                     <el-input :value="goodsName" icon="search" @click="goodsSelectVisible = true" readonly></el-input>
                 </el-form-item>
@@ -19,7 +21,7 @@
                 </el-form-item>
             </div>
 
-            <div class="formRow">
+            <div>
                 <el-form-item label="开料" prop="cuter_id">
                     <el-select v-model="production.cuter_id" placeholder="请选择">
                         <el-option v-for="item in staff.cuter" :label="item.name" :value="item.id" :key="item.id">
@@ -32,7 +34,7 @@
                 </el-form-item>
             </div>
 
-            <div class="fromRow">
+            <div>
                 <el-form-item label="排钻" prop="drill_id">
                     <el-select v-model="production.drill_id" placeholder="请选择">
                         <el-option v-for="item in staff.drill" :label="item.name" :value="item.id" :key="item.id">
@@ -45,7 +47,7 @@
                 </el-form-item>
             </div>
 
-            <div class="fromRow">
+            <div>
                 <el-form-item label="锣机" prop="sanding_id">
                     <el-select v-model="production.sanding_id" placeholder="请选择">
                         <el-option v-for="item in staff.sanding" :label="item.name" :value="item.id" :key="item.id">
@@ -58,7 +60,7 @@
                 </el-form-item>
             </div>
 
-            <div class="fromRow">
+            <div>
                 <el-form-item label="封边" prop="paste_id">
                     <el-select v-model="production.paste_id" placeholder="请选择">
                         <el-option v-for="item in staff.paste" :label="item.name" :value="item.id" :key="item.id">
@@ -71,7 +73,7 @@
                 </el-form-item>
             </div>
 
-            <div class="fromRow">
+            <div>
                 <el-form-item label="打包" prop="pack_id">
                     <el-select v-model="production.pack_id" placeholder="请选择">
                         <el-option v-for="item in staff.pack" :label="item.name" :value="item.id" :key="item.id">

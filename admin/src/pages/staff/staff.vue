@@ -1,30 +1,31 @@
 <template>
     <div>
-        <div class="position"><b>位置：</b>生产 <span class="el-icon-arrow-right"></span> 员工</div>
+        <el-breadcrumb separator="/" class="position">
+            <el-breadcrumb-item>生产</el-breadcrumb-item>
+            <el-breadcrumb-item>员工</el-breadcrumb-item>
+        </el-breadcrumb>
 
         <el-row class="operate">
-            <div class="btnAera">
+            <div class="operateBtn">
                 <router-link to="/staff/add">
                     <el-button type="primary" icon="plus" class="newBtn">新增</el-button>
                 </router-link>
             </div>
         </el-row>
 
-        <el-row class="table">
-            <el-table :data="staff" stripe style="width: 100%">
-                <el-table-column prop="name" label="姓名" align="center"></el-table-column>
-                <el-table-column prop="phone" label="电话" align="center"></el-table-column>
-                <el-table-column prop="job_name" label="职位" align="center"></el-table-column>
-                <el-table-column label="操作" align="center">
-                    <template scope="scope">
-                        <router-link :to="'/staff/edit/' + scope.row.id">
-                            <el-button size="small">修改</el-button>
-                        </router-link>
-                        <el-button type="danger" size="small" @click="deleteStaff(scope.row.id)">删除</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-row>
+        <el-table :data="staff" class="tables">
+            <el-table-column prop="name" label="姓名" align="center"></el-table-column>
+            <el-table-column prop="phone" label="电话" align="center"></el-table-column>
+            <el-table-column prop="job_name" label="职位" align="center"></el-table-column>
+            <el-table-column label="操作" align="center">
+                <template scope="scope">
+                    <router-link :to="'/staff/edit/' + scope.row.id">
+                        <el-button size="small">修改</el-button>
+                    </router-link>
+                    <el-button type="danger" size="small" @click="deleteStaff(scope.row.id)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
     </div>
 </template>
 

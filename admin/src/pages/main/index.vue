@@ -29,11 +29,14 @@
         height: 100%;
         top: 0;
         left: 0;
-        overflow: auto;
+        overflow: hidden;
     }
 
     .content {
-        position: relative;
-        padding: 60px 20px 20px 20px;
+        position: absolute;
+        padding: 40px 10px 10px 10px;
+        top: 100px;
+        bottom: 0;
+        overflow: auto;
     }
 </style>

@@ -6,14 +6,14 @@
         </el-breadcrumb>
 
         <el-row class="operate">
-            <el-form :inline="true" class="form">
+            <el-form :inline="true" class="operateForm">
                 <el-form-item label="搜索">
                     <el-input v-model="searchData" placeholder="输入姓名/手机号/地址"></el-input>
                 </el-form-item>
             </el-form>
         </el-row>
 
-        <el-table :data="customerShows" style="width:100%">
+        <el-table :data="customerShows" class="tables">
             <el-table-column prop="username" label="姓名" align="center"></el-table-column>
             <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
             <el-table-column label="地址" align="center">

@@ -6,7 +6,7 @@
         </el-breadcrumb>
 
         <el-row class="operate">
-            <el-form :inline="true" class="form">
+            <el-form :inline="true" class="operateForm">
                 <el-form-item label="型号">
                     <el-input icon="search" :value="goodsName" @click="goodsSelectVisible = true" readonly></el-input>
                 </el-form-item>
@@ -19,15 +19,15 @@
                 <el-button type="primary" @click="getList">搜索</el-button>
             </el-form>
 
-            <div class="btnAera">
+            <div class="operateBtn">
                 <router-link to="/production/add">
                     <el-button type="primary" icon="plus" class="newBtn">新增派工单</el-button>
                 </router-link>
             </div>
         </el-row>
 
-        <el-table :data="production" style="width:100%" v-loading="loading">
-            <el-table-column label="产品" align="center">
+        <el-table :data="production" class="tables" v-loading="loading">
+            <el-table-column label="产品" align="center" width="300">
                 <template scope="scope">{{scope.row.name}}-{{scope.row.category}}-{{scope.row.color}}</template>
             </el-table-column>
             <el-table-column prop="date" label="日期" align="center"></el-table-column>

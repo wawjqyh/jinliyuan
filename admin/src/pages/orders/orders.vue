@@ -7,7 +7,7 @@
 
         <!--筛选条件-->
         <el-row class="operate">
-            <el-form :inline="true" class="form">
+            <el-form :inline="true" class="operateForm">
                 <el-form-item label="选择日期">
                     <el-date-picker v-model="dateRange" type="daterange" align="left" placeholder="选择日期范围"
                                     :picker-options="pickerOptions" range-separator=" - " :editable=false>
@@ -17,7 +17,7 @@
         </el-row>
 
         <!--列表-->
-        <el-table :data="orders" style="width:100%" v-loading="loading">
+        <el-table :data="orders" class="tables" v-loading="loading">
             <el-table-column prop="username" label="客户"></el-table-column>
             <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
             <el-table-column prop="order_date" label="下单日期" align="center"></el-table-column>

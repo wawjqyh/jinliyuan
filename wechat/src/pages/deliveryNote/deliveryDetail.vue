@@ -34,7 +34,8 @@
         <div class="footerBar">
             <span>共 {{totalNum}} 件商品</span>
 
-            <a href="javascript:void(0)" class="finishBtn" @click="dialogShow = true">完成送货</a>
+            <a href="javascript:void(0)" class="finishBtn" @click="dialogShow = true" v-if="order.delivery_state == 0">完成送货</a>
+            <a href="javascript:void(0)" class="finishBtn" v-if="order.delivery_state == 1">已完成</a>
         </div>
 
         <v-dialog :show.sync="dialogShow" :options="dialogOptions" @ok="finishOrder"></v-dialog>
@@ -95,6 +96,7 @@
                 axios.post(api.orderDetail, {order_id: self.id})
                     .then(res => {
                         if (res.data.code === 1) {
+                            console.log(res.data.data);
                             self.order = res.data.data.order[0];
                             self.goods = res.data.data.goods
                         } else {
@@ -224,9 +226,10 @@
             position: fixed;
             width: 100%;
             height: 0.8rem;
-            background-color: @mainColor;
+            background-color: #fff;
             bottom: 0;
-            color: #fff;
+            color: @mainColor;
+            border-top: 1px solid @mainColor;
             line-height: 0.8rem;
             box-sizing: border-box;
             padding: 0 0.3rem;
@@ -238,7 +241,8 @@
                 height: 100%;
                 top: 0;
                 right: 0;
-                background-color: #135eff;
+                background-color: @mainColor;
+                color: #fff;
                 text-align: center;
                 font-size: 0.3rem;
             }

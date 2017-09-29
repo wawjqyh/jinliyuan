@@ -1,8 +1,11 @@
 <template>
-    <div class="goodsAdd">
-        <div class="position"><b>位置：</b>报表 <span class="el-icon-arrow-right"></span> 新增产品</div>
+    <div>
+        <el-breadcrumb separator="/" class="position">
+            <el-breadcrumb-item>报表</el-breadcrumb-item>
+            <el-breadcrumb-item>修改产品</el-breadcrumb-item>
+        </el-breadcrumb>
 
-        <el-form :model="product" ref="productAdd" :rules="rules" :label-width="'100px'" class="form">
+        <el-form :model="product" ref="productAdd" :rules="rules" :label-width="'100px'" class="formBlock">
             <el-form-item label="型号" prop="name">
                 <el-input v-model="product.name"></el-input>
             </el-form-item>
@@ -22,10 +25,10 @@
                 </el-select>
             </el-form-item>
 
-            <el-form-item>
+            <div class="formBtn">
                 <el-button type="primary" @click="submit">提交</el-button>
                 <el-button @click="$router.go(-1)">返回</el-button>
-            </el-form-item>
+            </div>
         </el-form>
     </div>
 </template>
@@ -163,15 +166,3 @@
         }
     }
 </script>
-
-<style lang="less">
-    .goodsAdd {
-        .form {
-            width: 500px;
-
-            .el-select {
-                display: block;
-            }
-        }
-    }
-</style>

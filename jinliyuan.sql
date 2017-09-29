@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-09-15 17:28:54
+Date: 2017-09-29 17:51:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -78,10 +78,10 @@ CREATE TABLE `goods` (
 -- Records of goods
 -- ----------------------------
 INSERT INTO `goods` VALUES ('1', '200', '白', '44', '1', '1');
-INSERT INTO `goods` VALUES ('2', '320', '红', '30', '2', '1');
+INSERT INTO `goods` VALUES ('2', '320', '红', '27', '2', '1');
 INSERT INTO `goods` VALUES ('3', '330', '黑', '52', '3', '1');
 INSERT INTO `goods` VALUES ('4', '890', '白', '340', '3', '1');
-INSERT INTO `goods` VALUES ('5', '355', '黄', '34', '2', '1');
+INSERT INTO `goods` VALUES ('5', '355', '黄', '33', '2', '1');
 INSERT INTO `goods` VALUES ('6', '860', '红', '67', '2', '1');
 INSERT INTO `goods` VALUES ('7', '111', '蓝', '238', '1', '1');
 INSERT INTO `goods` VALUES ('8', '910', '灰色', '52', '2', '1');
@@ -122,22 +122,23 @@ CREATE TABLE `orders` (
   `remarks` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `delivery_state` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of orders
 -- ----------------------------
-INSERT INTO `orders` VALUES ('4', '1501571413316', '7', '2017-08-01', '2017-08-01', '4170', null, null, '0');
-INSERT INTO `orders` VALUES ('5', '1501577956071', '10', '2017-08-02', '2017-08-01', '200', null, null, '0');
-INSERT INTO `orders` VALUES ('7', '1501659726811', '8', '2017-08-02', '2017-08-02', '12', null, null, '0');
-INSERT INTO `orders` VALUES ('8', '1501659756892', '8', '2017-08-10', '2017-08-02', '15', null, null, '0');
-INSERT INTO `orders` VALUES ('9', '1501660168139', '7', '2017-08-03', '2017-08-02', '1070', null, null, '0');
+INSERT INTO `orders` VALUES ('4', '1501571413316', '7', '2017-08-01', '2017-08-01', '4170', null, null, '1');
+INSERT INTO `orders` VALUES ('5', '1501577956071', '10', '2017-08-02', '2017-08-01', '200', null, null, '1');
+INSERT INTO `orders` VALUES ('7', '1501659726811', '8', '2017-08-02', '2017-08-02', '12', null, null, '1');
+INSERT INTO `orders` VALUES ('8', '1501659756892', '8', '2017-08-10', '2017-08-02', '15', null, null, '1');
+INSERT INTO `orders` VALUES ('9', '1501660168139', '7', '2017-08-03', '2017-08-02', '1070', null, null, '1');
 INSERT INTO `orders` VALUES ('11', '1501748373354', '7', '2017-08-04', '2017-08-03', '616', 'test地址', 'test备注', '0');
 INSERT INTO `orders` VALUES ('12', '1501748547281', '10', '2017-08-05', '2017-08-03', '3243', '物流111', '备注111', '0');
 INSERT INTO `orders` VALUES ('14', '1501833949750', '8', '2017-08-19', '2017-08-04', '114', 'adsf', 'asdg', '0');
 INSERT INTO `orders` VALUES ('22', '1502071697431', '11', '2017-08-20', '2017-08-07', '9', 'test1', 'test1', '0');
 INSERT INTO `orders` VALUES ('23', '1502175170823', '11', '2017-08-29', '2017-08-08', '546', '顺丰快递', '', '0');
-INSERT INTO `orders` VALUES ('24', '1502183522901', '9', '2017-08-11', '2017-08-08', '4', '1', '', '0');
+INSERT INTO `orders` VALUES ('24', '1502183522901', '9', '2017-08-11', '2017-08-08', '4', '1', '', '1');
+INSERT INTO `orders` VALUES ('25', '1505704524092', '11', '2017-09-17', '2017-09-18', '26', '顺丰', '', '1');
 
 -- ----------------------------
 -- Table structure for `order_goods`
@@ -150,7 +151,7 @@ CREATE TABLE `order_goods` (
   `num` int(11) NOT NULL,
   `price` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of order_goods
@@ -177,6 +178,8 @@ INSERT INTO `order_goods` VALUES ('55', '1502071697431', '2', '1', '1');
 INSERT INTO `order_goods` VALUES ('58', '1502175170823', '5', '2', '120');
 INSERT INTO `order_goods` VALUES ('59', '1502175170823', '6', '2', '153');
 INSERT INTO `order_goods` VALUES ('60', '1502183522901', '7', '4', '1');
+INSERT INTO `order_goods` VALUES ('61', '1505704524092', '2', '3', '6');
+INSERT INTO `order_goods` VALUES ('62', '1505704524092', '5', '1', '8');
 
 -- ----------------------------
 -- Table structure for `production`
@@ -217,7 +220,7 @@ CREATE TABLE `staff` (
   `job_id` int(11) NOT NULL,
   `state` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of staff
@@ -228,3 +231,4 @@ INSERT INTO `staff` VALUES ('3', 'test', '12300000000', '1', '0');
 INSERT INTO `staff` VALUES ('4', 'test2', '13700000001', '3', '1');
 INSERT INTO `staff` VALUES ('5', 'test3', '13811111111', '4', '1');
 INSERT INTO `staff` VALUES ('6', 'test4', '13866666666', '5', '1');
+INSERT INTO `staff` VALUES ('7', 'qiuqiu', '13722222222', '1', '1');

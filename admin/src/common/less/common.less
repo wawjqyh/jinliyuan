@@ -1,46 +1,83 @@
-.operate {
-    .form {
-        float: left;
-    }
-    .btnAera {
-        float: right;
-    }
-}
-
-.table {
-    margin-top: 10px;
-}
-
+/*导航条*/
 .position {
     position: absolute;
+    width: 100%;
     top: 0;
     left: 0;
-    width: 100%;
+    background-color: #eee;
+    height: 39px;
+    line-height: 39px;
+    padding-left: 10px;
+    border-bottom: 1px solid #cacaca;
     box-sizing: border-box;
-    height: 40px;
-    line-height: 40px;
-    font-size: 14px;
-    background-color: #E5E9F2;
-    border-bottom: 1px solid #d3dce6;
-    padding: 0 20px;
-    color: #999;
+}
 
-    b {
-        color: #333;
+//搜索栏
+.operate {
+    padding-top: 10px;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+
+    .operateForm {
+        flex-grow: 1;
+
+        .el-form-item {
+            margin-bottom: 10px;
+        }
     }
 
-    .el-icon-arrow-right {
-        font-size: 12px;
+    /*右侧按钮*/
+    .operateBtn {
+        flex-grow: 1;
+        text-align: right;
+        white-space: nowrap;
+        padding-left: 20px;
+        margin-bottom: 10px;
     }
 }
 
+/*列表*/
+.tables {
+    width: 100%;
+}
+
+/*分页*/
 .pagination {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
+    margin-top: 10px;
 
     .el-pagination {
+        float: right;
         padding: 0;
+    }
+}
+
+/*块状表格*/
+.formBlock {
+    padding: 20px 0;
+
+    .el-form-item__content {
+        width: 300px;
+    }
+
+    .el-select {
+        display: block;
+    }
+
+    .formBtn {
+        text-align: center;
+    }
+}
+
+.formInline {
+    padding: 20px 0;
+
+    .el-form-item__content {
+        width: 200px;
+    }
+
+    .formBtn {
+        text-align: center;
     }
 }
 

@@ -1,10 +1,12 @@
 <template>
-    <div class="staffAdd">
-        <div class="position"><b>位置：</b>生产 <span class="el-icon-arrow-right"></span> 员工 <span
-            class="el-icon-arrow-right"></span> 修改员工
-        </div>
+    <div>
+        <el-breadcrumb separator="/" class="position">
+            <el-breadcrumb-item>生产</el-breadcrumb-item>
+            <el-breadcrumb-item>员工</el-breadcrumb-item>
+            <el-breadcrumb-item>修改</el-breadcrumb-item>
+        </el-breadcrumb>
 
-        <el-form :model="staff" ref="staffAdd" :rules="rules" label-width="100px" class="form">
+        <el-form :model="staff" ref="staffAdd" :rules="rules" label-width="100px" class="formBlock">
             <el-form-item label="姓名" prop="name">
                 <el-input v-model="staff.name"></el-input>
             </el-form-item>
@@ -20,10 +22,10 @@
                 </el-select>
             </el-form-item>
 
-            <el-form-item>
+            <div class="formBtn">
                 <el-button type="primary" @click="submit">提交</el-button>
                 <el-button @click="$router.go(-1)">返回</el-button>
-            </el-form-item>
+            </div>
         </el-form>
     </div>
 </template>

@@ -1,25 +1,25 @@
 <template>
-    <div class="goods">
+    <div>
         <el-breadcrumb separator="/" class="position">
             <el-breadcrumb-item>报表</el-breadcrumb-item>
             <el-breadcrumb-item>库存</el-breadcrumb-item>
         </el-breadcrumb>
 
         <el-row class="operate">
-            <el-form :inline="true" class="form">
+            <el-form :inline="true" class="operateForm">
                 <el-form-item label="搜索">
                     <el-input v-model="search" placeholder="输入型号/类型/颜色"></el-input>
                 </el-form-item>
             </el-form>
 
-            <div class="btnAera">
+            <div class="operateBtn">
                 <router-link to="/goods/add">
                     <el-button type="primary" icon="plus" class="newBtn">新增产品</el-button>
                 </router-link>
             </div>
         </el-row>
 
-        <el-table :data="goodsShows" style="width:100%">
+        <el-table :data="goodsShows" class="tables">
             <el-table-column prop="name" label="型号" align="center"></el-table-column>
             <el-table-column prop="category" label="类型" align="center"></el-table-column>
             <el-table-column prop="color" label="颜色" align="center"></el-table-column>
@@ -130,6 +130,3 @@
         }
     }
 </script>
-
-<style lang="less">
-</style>
