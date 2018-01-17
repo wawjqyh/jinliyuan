@@ -46,7 +46,7 @@ main.list = async function (ctx, next) {
         connection.release();
 
         ctx.body = {
-            code: 1,
+            state: true,
             mes: "success",
             data: sqlData[0],
             totalNum: sqlData[1][0].totalNum
@@ -57,7 +57,7 @@ main.list = async function (ctx, next) {
         console.log(err);
 
         ctx.body = {
-            code: 0,
+            state: false,
             mes: "操作失败"
         }
     }
@@ -104,14 +104,14 @@ main.new = async function (ctx, next) {
         connection.release();
 
         ctx.body = {
-            code: 1,
+            state: true,
             mes: "success"
         }
     } catch (err) {
         console.log(err);
 
         ctx.body = {
-            code: 0,
+            state: false,
             mes: "操作失败"
         }
     }
@@ -151,7 +151,7 @@ main.detail = async function (ctx, next) {
         connection.release();
 
         ctx.body = {
-            code: 1,
+            state: true,
             mes: "success",
             data: {
                 order: order,
@@ -162,7 +162,7 @@ main.detail = async function (ctx, next) {
         console.log(err);
 
         ctx.body = {
-            code: 0,
+            state: false,
             mes: "操作失败"
         }
     }
@@ -217,14 +217,14 @@ main.delete = async function (ctx, next) {
         connection.release();
 
         ctx.body = {
-            code: 1,
+            state: true,
             mes: "success"
         }
     } catch (err) {
         console.log(err);
 
         ctx.body = {
-            code: 0,
+            state: false,
             mes: "操作失败"
         }
     }
@@ -306,14 +306,14 @@ main.update = async function (ctx, next) {
         connection.release();
 
         ctx.body = {
-            code: 1,
+            state: true,
             mes: "success"
         }
     } catch (err) {
         console.log(err);
 
         ctx.body = {
-            code: 0,
+            state: false,
             mes: "操作失败"
         }
     }

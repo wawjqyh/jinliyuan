@@ -55,7 +55,7 @@ compiler.plugin('compilation', function (compilation) {
  });*/
 
 let proxy = proxyMiddleware({
-    target: "http://192.168.5.58:3001"
+    target: "http://192.168.128.10:3001"
 });
 
 app.use("/api", proxy);

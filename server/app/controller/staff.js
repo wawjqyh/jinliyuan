@@ -11,7 +11,7 @@ main.jobList = async function (ctx, next) {
         let job = await sql.query(`SELECT * from job`);
 
         ctx.body = {
-            code: 1,
+            state: true,
             mes: "success",
             data: job
         }
@@ -19,7 +19,7 @@ main.jobList = async function (ctx, next) {
         console.log(err);
 
         ctx.body = {
-            code: 0,
+            state: false,
             mes: "操作失败"
         }
     }
@@ -41,7 +41,7 @@ main.list = async function (ctx, next) {
         let staff = await sql.query(staffSql);
 
         ctx.body = {
-            code: 1,
+            state: true,
             mes: "success",
             data: staff
         }
@@ -49,7 +49,7 @@ main.list = async function (ctx, next) {
         console.log(err);
 
         ctx.body = {
-            code: 0,
+            state: false,
             mes: "操作失败"
         }
     }
@@ -66,14 +66,14 @@ main.add = async function (ctx, next) {
         await sql.query("INSERT INTO staff " + insertSql);
 
         ctx.body = {
-            code: 1,
+            state: true,
             mes: "success"
         }
     } catch (err) {
         console.log(err);
 
         ctx.body = {
-            code: 0,
+            state: false,
             mes: "操作失败"
         }
     }
@@ -89,14 +89,14 @@ main.delete = async function (ctx, next) {
         await sql.query(`UPDATE staff SET state = 0 WHERE id = ${id}`);
 
         ctx.body = {
-            code: 1,
+            state: true,
             mes: "success"
         }
     } catch (err) {
         console.log(err);
 
         ctx.body = {
-            code: 0,
+            state: false,
             mes: "操作失败"
         }
     }
@@ -112,7 +112,7 @@ main.detail = async function (ctx, next) {
         let data = await sql.query(`SELECT * FROM staff WHERE id = ${id}`);
 
         ctx.body = {
-            code: 1,
+            state: true,
             mes: "success",
             data: data[0]
         }
@@ -120,7 +120,7 @@ main.detail = async function (ctx, next) {
         console.log(err);
 
         ctx.body = {
-            code: 0,
+            state: false,
             mes: "操作失败"
         }
     }
@@ -142,14 +142,14 @@ main.update = async function (ctx, next) {
         await sql.query(updataStaffSql);
 
         ctx.body = {
-            code: 1,
+            state: true,
             mes: "success"
         }
     } catch (err) {
         console.log(err);
 
         ctx.body = {
-            code: 0,
+            state: false,
             mes: "操作失败"
         }
     }

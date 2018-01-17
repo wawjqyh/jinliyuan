@@ -54,7 +54,7 @@ main.index = async function (ctx, next) {
         });
 
         ctx.body = {
-            code: 1,
+            state: true,
             mes: "success",
             data: {
                 orders,
@@ -68,7 +68,7 @@ main.index = async function (ctx, next) {
         console.log(err);
 
         ctx.body = {
-            code: 0,
+            state: false,
             mes: "操作失败"
         }
     }

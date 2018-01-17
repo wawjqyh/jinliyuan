@@ -1,0 +1,15 @@
+.clearFix() {
+    &:before, &:after {
+        content: " ";
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+}
+
+.ellipsisNormal() {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

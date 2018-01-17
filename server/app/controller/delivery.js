@@ -31,7 +31,7 @@ main.delivery = async function (ctx, next) {
         connection.release();
 
         ctx.body = {
-            code: 1,
+            state: true,
             mes: "success",
             data: {
                 onDelivery: sqlData[0],
@@ -42,7 +42,7 @@ main.delivery = async function (ctx, next) {
         console.log(err);
 
         ctx.body = {
-            code: 0,
+            state: false,
             mes: "操作失败"
         }
     }
@@ -55,14 +55,14 @@ main.finish = async function (ctx, next) {
         await sql.query(`UPDATE orders SET delivery_state = 1 WHERE order_id = ${id}`);
 
         ctx.body = {
-            code: 1,
+            state: true,
             mes: "success"
         }
     } catch (err) {
         console.log(err);
 
         ctx.body = {
-            code: 0,
+            state: false,
             mes: "操作失败"
         }
     }
