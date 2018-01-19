@@ -19,7 +19,7 @@
 
             <ul class="list">
                 <li v-for="order in orders">
-                    <router-link :to="'/orderDetail/' + order.order_id">
+                    <router-link :to="'/order/detail/' + order.order_id">
                         <div class="orderTime">
                             <span>下单时间：{{order.order_date}}</span>
                             <span v-if="order.delivery_state == 0" class="deliveryState">未发货</span>
@@ -34,7 +34,7 @@
         </div>
 
         <ul class="toolBtn">
-            <router-link :to="'/customerEdit/' + id" tag="li">修改</router-link>
+            <router-link :to="'/customer/edit/' + id" tag="li">修改</router-link>
             <br>
             <li class="deleteOrder" @click="dialogShow = true">删除</li>
         </ul>
@@ -190,7 +190,7 @@
                 line-height: 0.8rem;
                 font-size: 0.3rem;
                 font-weight: normal;
-                color: @mainColor;
+                color: #31bfcf;
                 padding-left: 0.3rem;
                 border-bottom: 1px solid #eee;
                 background-color: #fff;

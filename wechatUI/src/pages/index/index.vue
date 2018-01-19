@@ -21,14 +21,14 @@
                 </div>
             </div>
 
-            <router-link to="/orderAdd" class="orderBtn">开单</router-link>
+            <router-link to="/order/add" class="orderBtn">开单</router-link>
         </div>
 
         <div class="orderTitle"><span class="fa fa-file-text-o"></span> 最近订单</div>
 
         <ul class="list">
             <li v-for="order in orders">
-                <router-link :to="'/orderDetail/' + order.order_id">
+                <router-link :to="'/order/detail/' + order.order_id">
                     <div class="orderTime">
                         <span>下单时间：{{order.order_date}}</span>
                         <span v-if="order.delivery_state == 0" class="deliveryState">未发货</span>

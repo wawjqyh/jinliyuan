@@ -37,7 +37,7 @@
         </div>
 
         <ul class="toolBtn">
-            <router-link :to="'/orderEdit/' + id" tag="li">修改</router-link>
+            <router-link :to="'/order/edit/' + id" tag="li">修改</router-link>
             <br>
             <li class="deleteOrder" @click="dialogShow = true">删除</li>
         </ul>
@@ -185,7 +185,7 @@
                 line-height: 0.8rem;
                 font-size: 0.3rem;
                 font-weight: normal;
-                color: @mainColor;
+                color: #31bfcf;
                 padding-left: 0.3rem;
 
                 .fa-angle-right {
@@ -235,7 +235,7 @@
             position: fixed;
             width: 100%;
             height: 0.8rem;
-            background-color: @mainColor;
+            background-color: #31bfcf;
             bottom: 0;
             color: #fff;
             line-height: 0.8rem;

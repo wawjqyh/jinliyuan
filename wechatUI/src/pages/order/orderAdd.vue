@@ -74,7 +74,7 @@
             </ul>
 
             <ul class="toolBtn">
-                <router-link to="/customerAdd" tag="li">新增<br>客户</router-link>
+                <router-link to="/customer/add" tag="li">新增<br>客户</router-link>
             </ul>
 
             <a href="javascript:void(0)" class="confirmBtn" @click="customerBoxState = false">确定</a>
@@ -457,7 +457,7 @@
                 height: 0.5rem;
                 line-height: 0.5rem;
                 padding: 0.1rem 0;
-                color: @mainColor;
+                color: #31bfcf;
                 position: relative;
 
                 .addGoodsBtn {
@@ -466,7 +466,7 @@
                     height: 0.5rem;
                     top: 0.1rem;
                     right: 0;
-                    background-color: @mainColor;
+                    background-color: #31bfcf;
                     color: #fff;
                     padding: 0 0.2rem;
                     border-radius: 0.2rem;
@@ -536,7 +536,7 @@
                 position: absolute;
                 height: 0.9rem;
                 line-height: 0.9rem;
-                color: @mainColor;
+                color: #31bfcf;
                 font-size: 0.6rem;
                 left: 0.3rem;
             }
@@ -566,7 +566,7 @@
                 position: absolute;
                 width: 2rem;
                 height: 0.9rem;
-                background-color: @mainColor;
+                background-color: #31bfcf;
                 color: #fff;
                 top: 0;
                 right: 0;
@@ -659,7 +659,7 @@
                 width: 0.3rem;
                 height: 0.3rem;
                 -webkit-appearance: none;
-                border: 2px solid @mainColor;
+                border: 2px solid #31bfcf;
                 border-radius: 50%;
                 top: 0.4rem;
                 right: 0;
@@ -667,7 +667,7 @@
             }
 
             .radio:checked {
-                background-color: @mainColor;
+                background-color: #31bfcf;
             }
         }
 
@@ -677,7 +677,7 @@
             height: 0.8rem;
             left: 0;
             bottom: 0;
-            background-color: @mainColor;
+            background-color: #31bfcf;
             line-height: 0.8rem;
             color: #fff;
             text-align: center;

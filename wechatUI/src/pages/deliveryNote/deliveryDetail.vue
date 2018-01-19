@@ -182,7 +182,7 @@
                 line-height: 0.8rem;
                 font-size: 0.3rem;
                 font-weight: normal;
-                color: @mainColor;
+                color: #31bfcf;
                 padding-left: 0.3rem;
 
                 .fa-angle-right {
@@ -228,8 +228,8 @@
             height: 0.8rem;
             background-color: #fff;
             bottom: 0;
-            color: @mainColor;
-            border-top: 1px solid @mainColor;
+            color: #31bfcf;
+            border-top: 1px solid #31bfcf;
             line-height: 0.8rem;
             box-sizing: border-box;
             padding: 0 0.3rem;
@@ -241,7 +241,7 @@
                 height: 100%;
                 top: 0;
                 right: 0;
-                background-color: @mainColor;
+                background-color: #31bfcf;
                 color: #fff;
                 text-align: center;
                 font-size: 0.3rem;

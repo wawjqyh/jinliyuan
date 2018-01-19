@@ -207,87 +207,16 @@
 
                 return canSubmit;
             }
+        },
+
+        mounted(){
+            this.$nextTick(() => {
+                this.$indicator.close();
+            })
         }
     }
 </script>
 
 <style lang="less">
-    .customerAdd {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        box-sizing: border-box;
-        padding-top: 0.8rem;
-        background-color: #eee;
-
-        .form {
-            background-color: #fff;
-            padding: 0 0.3rem;
-
-            .formRow {
-                border-bottom: 1px solid #eee;
-                position: relative;
-                line-height: 1rem;
-                padding-left: 1.5rem;
-
-                span {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                }
-
-                b {
-                    color: #f00;
-                    line-height: 1rem;
-                }
-
-                input, select {
-                    background: none;
-                    border: none;
-                    font-size: 0.3rem;
-                    color: #999;
-                    display: block;
-                    width: 100%;
-                    height: 1rem;
-                    outline: none;
-                }
-
-                .error {
-                    color: #f00;
-                    font-size: 0.2rem;
-                    line-height: 0.3rem;
-                }
-            }
-
-            .formRow:last-child {
-                border: none;
-            }
-        }
-
-        .tip {
-            padding: 0 0.3rem;
-            font-size: 0.24rem;
-            color: #999;
-        }
-
-        .btn {
-            width: 90%;
-            display: block;
-            margin: 0.5rem auto;
-            height: 0.8rem;
-            line-height: 0.8rem;
-            text-align: center;
-            border-radius: 0.2rem;
-        }
-
-        .save {
-            color: #fff;
-            background-color: #31bfcf;
-        }
-
-        .cancel {
-            background-color: #fff;
-        }
-    }
+    @import "./less/customerAdd";
 </style>

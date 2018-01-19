@@ -3,7 +3,7 @@
 .order {
     .searchRow {
         padding: 0.15rem 0.3rem;
-        background-color: @mainColor;
+        background-color: #31bfcf;
         box-sizing: border-box;
         height: 0.8rem;
         line-height: 0.5rem;
@@ -31,64 +31,46 @@
         background-color: #fff;
         z-index: 10;
 
-        .row {
+        input[type="text"] {
+            background: none;
             height: 0.7rem;
-            line-height: 0.7rem;
             text-align: center;
-            padding: 0.1rem 0.3rem;
+            border: 1px solid #ddd;
+            border-radius: 0.1rem;
+            box-sizing: border-box;
         }
 
-        .dataRow1 {
-            height: 0.7rem;
-            padding: 0.1rem 0.3rem;
+        .selectAll {
+            margin: 0.3rem;
 
-            .cov-vue-date {
-                display: block;
-            }
-
-            .cov-datepicker {
-                box-sizing: border-box;
-                background: none;
-                border: 1px solid #eee;
-                height: 0.7rem;
-                border-radius: 0.2rem;
-                text-align: center;
-                display: block;
+            input {
                 width: 100%;
             }
         }
 
-        .dataRow2 {
-            height: 0.7rem;
-            padding: 0.1rem 0.3rem;
-            display: flex;
-            justify-content: space-between;
+        .selectTime {
+            margin: 0.3rem;
+            text-align: center;
+            position: relative;
+            line-height: 0.7rem;
 
-            .line {
-                line-height: 0.7rem;
+            input {
+                width: 3rem;
+                position: absolute;
             }
 
-            .cov-datepicker {
-                box-sizing: border-box;
-                background: none;
-                border: 1px solid #eee;
-                height: 0.7rem;
-                border-radius: 0.2rem;
-                text-align: center;
-                display: block;
-                width: 3.2rem;
+            .startTime {
+                left: 0;
+            }
+
+            .endTime {
+                right: 0;
             }
         }
 
         .active {
-            color: #FFB97C;
-
-            .cov-datepicker {
-                border: 1px solid #FFB97C;
-                color: #FFB97C;
-            }
-
-            .cov-datepicker::placeholder {
+            input {
+                border-color: #FFB97C;
                 color: #FFB97C;
             }
         }
@@ -97,9 +79,9 @@
             margin: 0.5rem 0.3rem 0 0.3rem;
             height: 0.9rem;
             display: block;
-            background-color: @mainColor;
+            background-color: #31bfcf;
             color: #fff;
-            border-radius: 0.2rem;
+            border-radius: 0.1rem;
             text-align: center;
             line-height: 0.9rem;
         }
@@ -112,6 +94,7 @@
         left: 0;
         width: 100%;
         background-color: #f3f3f3;
+        overflow: auto;
     }
 
     .list {
@@ -156,5 +139,10 @@
             float: right;
             color: #f00;
         }
+    }
+
+    .mint-spinner-triple-bounce {
+        text-align: center;
+        padding-bottom: 0.2rem;
     }
 }

@@ -35,20 +35,20 @@ let router = new Router({
                 {path: "goods", component: vGoods},
                 {path: "order", component: vOrder},
                 {path: "customer", component: vCustomer},
-                {path: "/customer/detail/:customer_id", component: vCustomerDetail},
+                {path: "customer/detail/:customer_id", component: vCustomerDetail},
                 {path: "report", component: vReport}
             ]
         },
 
-        {path: "/customerAdd", component: vCustomerAdd},
-        {path: "/customerEdit/:customer_id", component: vCustomerEdit},
+        {path: "/customer/add", component: vCustomerAdd},
+        {path: "/customer/edit/:customer_id", component: vCustomerEdit},
 
-        {path: "/orderAdd", component: vOrderAdd},
-        {path: "/orderDetail/:order_id", component: vOrderDetail},
-        {path: "/orderEdit/:order_id", component: vOrderEdit},
+        {path: "/order/add", component: vOrderAdd},
+        {path: "/order/detail/:order_id", component: vOrderDetail},
+        {path: "/order/edit/:order_id", component: vOrderEdit},
 
         {path: "/delivery", component: vDelivery},
-        {path: "/deliveryDetail/:order_id", component: vDeliveryDetail},
+        {path: "/delivery/detail/:order_id", component: vDeliveryDetail},
     ]
 });
 

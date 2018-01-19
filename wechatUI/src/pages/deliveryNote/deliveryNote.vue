@@ -7,7 +7,7 @@
 
         <ul class="list">
             <li v-for="order in orderShows">
-                <router-link :to="'/deliveryDetail/' + order.order_id">
+                <router-link :to="'/delivery/detail/' + order.order_id">
                     <div class="orderTime">
                         <span>下单时间：{{order.order_date}}</span>
                         <span v-if="order.delivery_state == 0" class="deliveryState">未发货</span>
@@ -89,19 +89,19 @@
             left: 0;
             box-sizing: border-box;
             display: flex;
-            border-bottom: 1px solid @mainColor;
+            border-bottom: 1px solid #31bfcf;
             background-color: #fff;
 
             li {
                 flex-grow: 1;
                 text-align: center;
                 line-height: 0.8rem;
-                color: @mainColor;
+                color: #31bfcf;
             }
 
             .active {
                 color: #fff;
-                background-color: @mainColor;
+                background-color: #31bfcf;
             }
         }
 
