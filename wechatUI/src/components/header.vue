@@ -1,14 +1,14 @@
 <template>
     <div class="header">
         <a href="javascript:void(0)" class="fa fa-angle-left" @click="$router.go(-1)"></a>
-        <h3>{{title}}</h3>
+        <h3>
+            <slot></slot>
+        </h3>
     </div>
 </template>
 
 <script>
-    export default{
-        props: ["title"]
-    }
+    export default{}
 </script>
 
 <style lang="less">
