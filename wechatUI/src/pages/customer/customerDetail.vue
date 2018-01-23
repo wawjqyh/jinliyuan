@@ -1,6 +1,6 @@
 <template>
     <div class="customerDetail">
-        <v-header title="客户详情"></v-header>
+        <v-header>客户详情</v-header>
 
         <div class="customerMes">
             <div class="username">
@@ -36,21 +36,12 @@
         <ul class="toolBtn">
             <router-link :to="'/customer/edit/' + id" tag="li">修改</router-link>
             <br>
-            <li class="deleteOrder" @click="dialogShow = true">删除</li>
+            <li class="deleteOrder" @click="deleteCustomer">删除</li>
         </ul>
-
-        <v-dialog :show.sync="dialogShow" :options="dialogOptions" @ok="deleteCustomer"></v-dialog>
     </div>
 </template>
 
 <script>
-    import axios from "axios";
-    import api from "../../common/js/api";
-    import {mapMutations} from "vuex";
-
-    import vHeader from "../../components/header.vue";
-    import vDialog from "../../components/dialog.vue";
-
     export default{
         data(){
             let self = this;
@@ -58,19 +49,12 @@
             return {
                 id: self.$route.params.customer_id,     //客户id
                 customer: {},                           //客户信息
-                orders: [],
-
-                dialogShow: false,                      //弹框的状态
-                dialogOptions: {
-                    title: "警告",
-                    content: "是否删除这个客户？",
-                    dialog: true
-                }
+                orders: []                              //客户订单记录
             }
         },
 
         computed: {
-            //最近一次交易日期
+            //最近一次交易日期，取第一个订单的日期
             lastDate(){
                 let self = this;
 
@@ -85,6 +69,7 @@
             totalMoney(){
                 let totalMoney = 0;
 
+                //遍历所有订单获取总额
                 this.orders.forEach(item => {
                     totalMoney += item.total_money;
                 });
@@ -93,54 +78,50 @@
             }
         },
 
-        components: {
-            vHeader,
-            vDialog
-        },
-
         methods: {
-            ...mapMutations(["showLoading", "hideLoading"]),
-
             //获取用户信息
-            getData(){
+            async getData(){
                 let self = this;
 
-                axios.post(api.customerDetail, {id: self.id})
-                    .then(res => {
-                        if (res.data.code === 1) {
-                            self.customer = res.data.data.customer[0];
-                            self.orders = res.data.data.orders
-                        } else {
-                            console.log(res.data);
-                        }
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    })
+                //获取数据
+                let res = await self.$axios.post(self.$api.customerDetail, {id: self.id});
+                self.$indicator.close();
+
+                //处理响应信息
+                if (res.state) {
+                    self.customer = res.data.customer[0];
+                    self.orders = res.data.orders
+                } else {
+                    self.$toast("获取客户信息失败");
+                }
             },
 
             //删除客户
-            deleteCustomer(){
+            async deleteCustomer(){
                 let self = this;
 
-                self.showLoading();
+                //弹框确认
+                let action = await self.$messagebox({
+                    title: "提示",
+                    message: "确定删除该客户",
+                    showCancelButton: true
+                });
+                if (action === "cancel") {
+                    return;
+                }
 
-                axios.post(api.customerDelete, {id: self.id})
-                    .then(res => {
-                        self.hideLoading();
+                //调接口删除
+                self.$indicator.open();
+                let res = await self.$axios.post(self.$api.customerDelete, {id: self.id});
+                self.$indicator.close();
 
-                        if (res.data.code === 1) {
-                            alert("删除成功");
-                            self.$router.push("/customer");
-                        } else {
-                            alert("操作失败");
-                        }
-                    })
-                    .catch(err => {
-                        self.hideLoading();
-                        console.log(err);
-                        alert("操作失败");
-                    })
+                //处理响应信息
+                if (res.state) {
+                    self.$toast("删除客户成功");
+                    self.$router.push("/customer");
+                } else {
+                    self.$toast("删除失败");
+                }
             }
         },
 
@@ -151,114 +132,5 @@
 </script>
 
 <style lang="less">
-    @import "../../common/less/common";
-
-    .customerDetail {
-        padding: 0.8rem 0 3.5rem 0;
-        background-color: #f5f5f5;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
-        overflow: auto;
-
-        .customerMes {
-            padding: 0.2rem 0.3rem;
-            background-color: #fff;
-            margin-bottom: 0.2rem;
-
-            .username {
-                line-height: 0.6rem;
-                border-bottom: 1px solid #eee;
-                margin-bottom: 0.1rem;
-            }
-
-            .phone {
-                float: right;
-            }
-
-            .itemRow {
-                line-height: 0.5rem;
-                font-size: 0.26rem;
-                color: #999;
-            }
-        }
-
-        .orderList {
-            h3 {
-                height: 0.8rem;
-                line-height: 0.8rem;
-                font-size: 0.3rem;
-                font-weight: normal;
-                color: #31bfcf;
-                padding-left: 0.3rem;
-                border-bottom: 1px solid #eee;
-                background-color: #fff;
-
-                .fa-angle-right {
-                    color: #ccc;
-                    font-size: 0.5rem;
-                    vertical-align: middle;
-                }
-            }
-
-            li {
-                background-color: #fff;
-                padding: 0.2rem 0.3rem;
-                margin-bottom: 0.2rem;
-
-                a {
-                    display: block;
-                }
-
-                .orderTime {
-                    font-size: 0.24rem;
-                    border-bottom: 1px solid #eee;
-                    color: #999;
-                    line-height: 0.5rem;
-                    margin-bottom: 0.2rem;
-                }
-
-                .deliveryState {
-                    float: right;
-                    color: #f00;
-                }
-
-                .deliveryAddress {
-                    font-size: 0.24rem;
-                    color: #999;
-                }
-
-                .money {
-                    float: right;
-                    color: #999;
-                }
-            }
-        }
-
-        .toolBtn {
-            position: fixed;
-            bottom: 0.9rem;
-            right: 0.3rem;
-
-            li {
-                width: 1rem;
-                height: 1rem;
-                color: #fff;
-                margin-bottom: 0.2rem;
-                background-color: #31bfcf;
-                border-radius: 50%;
-                font-size: 0.24rem;
-                text-align: center;
-                display: inline-flex;
-                justify-content: center;
-                align-items: center;
-                line-height: 0.3rem;
-            }
-
-            .deleteOrder {
-                background-color: #cd270a;
-            }
-        }
-    }
+    @import "./less/customerDetail";
 </style>

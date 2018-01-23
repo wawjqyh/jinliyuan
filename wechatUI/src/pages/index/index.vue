@@ -65,7 +65,9 @@
             async getData(){
                 let self = this;
 
+                //调接口获取数据
                 let res = await self.$axios.get(self.$api.index);
+                self.$indicator.close();
 
                 if (res.state) {
                     self.orders = res.data.orders;
@@ -75,8 +77,6 @@
                         message: "获取首页数据失败"
                     });
                 }
-
-                self.$indicator.close();
             }
         },
 

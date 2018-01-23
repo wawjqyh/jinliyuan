@@ -97,11 +97,12 @@
                     endTime: self.endTime
                 };
 
+                //调接口获取数据
                 let res = await self.$axios.post(self.$api.orderList, postData);
-
                 self.$indicator.close();
 
                 if (res.state) {
+                    //判断能否继续加载
                     if (res.data.length === self.pageSize) {
                         self.loading = false;
                         self.canLoad = false;
@@ -114,23 +115,28 @@
                 }
             },
 
+            //打开日期控件
             openPicker(picker){
                 this.$refs[picker].open();
             },
 
+            //选择全部日期
             onSelectAll(){
                 this.startTime = "";
                 this.endTime = "";
             },
 
+            //选择开始日期
             onSelectStart(val){
                 this.startTime = moment(val).format("YYYY/MM/DD");
             },
 
+            //选择结束日期
             onSelectEnd(val){
                 this.endTime = moment(val).format("YYYY/MM/DD");
             },
 
+            //确认选择日期，重新加载列表
             onSelectDate(){
                 this.filterBoxState = false;
                 this.pageIndex = 1;

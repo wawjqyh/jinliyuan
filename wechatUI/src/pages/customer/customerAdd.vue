@@ -6,13 +6,13 @@
             <div class="formRow">
                 <span>姓名 <b>*</b></span>
                 <input type="text" placeholder="请输入姓名" v-model="formData.username">
-                <p class="error"></p>
+                <p class="error" v-if="error.username">{{error.username[0].message}}</p>
             </div>
 
             <div class="formRow">
                 <span>号码 <b>*</b></span>
                 <input type="text" placeholder="请输入手机号码" v-model="formData.phone">
-                <p class="error"></p>
+                <p class="error" v-if="error.phone">{{error.phone[0].message}}</p>
             </div>
 
             <div class="formRow">
@@ -21,7 +21,7 @@
                     <option value="">请选择</option>
                     <option v-for="(val, key) in provinceData" :value="key">{{val}}</option>
                 </select>
-                <p class="error"></p>
+                <p class="error" v-if="error.province">{{error.province[0].message}}</p>
             </div>
 
             <div class="formRow">
@@ -30,7 +30,7 @@
                     <option value="">请选择</option>
                     <option v-for="(val, key) in cityData" :value="key">{{val}}</option>
                 </select>
-                <p class="error"></p>
+                <p class="error" v-if="error.city">{{error.city[0].message}}</p>
             </div>
 
             <div class="formRow">
@@ -49,7 +49,6 @@
 </template>
 
 <script>
-    import vHeader from "../../components/header.vue";
     import addressData from "../../common/js/placeData";
     import AsyncValidator from "async-validator";
 
@@ -71,7 +70,7 @@
                 cityData: {},
                 districtData: {},
 
-                formData: {
+                formData: {             //表单数据
                     username: "",
                     phone: "",
                     province: "",
@@ -79,17 +78,16 @@
                     district: ""
                 },
 
-                error: {},
-                validate: false
+                error: {}               //表单验证信息
             }
         },
 
         watch: {
             //省市区联动
-            provinceId(val){
+            "formData.province"(val){
                 this.districtData = {};
-                this.cityId = "";
-                this.districtId = "";
+                this.formData.city = "";
+                this.formData.district = "";
 
                 if (val === "") {
                     this.cityData = {};
@@ -98,37 +96,36 @@
                 }
             },
 
-            cityId(val){
-                this.districtId = "";
+            "formData.city"(val){
+                this.formData.district = "";
 
                 if (val === "") {
                     this.districtData = {};
                 } else {
                     this.districtData = addressData[val];
                 }
-            },
-
-            formData(val){
-                let self = this;
-
-                validator.validate(val, function (error, fields) {
-                    if (fields !== null) {
-                        self.error = fields;
-                    } else {
-                        self.validate = true;
-                    }
-                });
             }
         },
 
-        components: {
-            vHeader
-        },
-
         methods: {
+            //提交
             async submit(){
                 let self = this;
 
+                //表单校验
+                let fields = await new Promise((resolve, reject) => {
+                    validator.validate(self.formData, function (error, fields) {
+                        resolve(fields);
+                    });
+                });
+
+                //fields不为空则有校验失败的数据
+                if (fields !== null) {
+                    self.error = fields;
+                    return;
+                }
+
+                //获取省市区的名称
                 let provinceName = addressData["86"][self.formData.province];
                 let cityName = addressData[self.formData.province][self.formData.city];
                 let districtName = addressData[self.formData.city][self.formData.district];
@@ -144,10 +141,12 @@
                     district: districtName
                 };
 
+                //提交数据
                 self.$indicator.open();
                 let res = await self.$axios.post(self.$api.customerInsert, postData);
                 self.$indicator.close();
 
+                //判断响应信息
                 if (res.state) {
                     self.$toast("保存成功");
                     self.$router.go(-1);

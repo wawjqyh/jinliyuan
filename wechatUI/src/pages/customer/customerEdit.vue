@@ -1,41 +1,41 @@
 <template>
     <div class="customerAdd">
-        <v-header title="新增客户"></v-header>
+        <v-header>修改客户</v-header>
 
         <div class="form">
             <div class="formRow">
                 <span>姓名 <b>*</b></span>
-                <input type="text" placeholder="请输入姓名" v-model="username">
-                <p class="error" v-if="!validate.username.state">{{validate.username.mes}}</p>
+                <input type="text" placeholder="请输入姓名" v-model="formData.username">
+                <p class="error" v-if="error.username">{{error.username[0].message}}</p>
             </div>
 
             <div class="formRow">
                 <span>号码 <b>*</b></span>
-                <input type="text" placeholder="请输入手机号码" v-model="phone">
-                <p class="error" v-if="!validate.phone.state">{{validate.phone.mes}}</p>
+                <input type="text" placeholder="请输入手机号码" v-model="formData.phone">
+                <p class="error" v-if="error.phone">{{error.phone[0].message}}</p>
             </div>
 
             <div class="formRow">
                 <span>省份 <b>*</b></span>
-                <select v-model="provinceId">
+                <select v-model="formData.province">
                     <option value="">请选择</option>
                     <option v-for="(val, key) in provinceData" :value="key">{{val}}</option>
                 </select>
-                <p class="error" v-if="!validate.province.state">{{validate.province.mes}}</p>
+                <p class="error" v-if="error.province">{{error.province[0].message}}</p>
             </div>
 
             <div class="formRow">
                 <span>城市 <b>*</b></span>
-                <select v-model="cityId">
+                <select v-model="formData.city">
                     <option value="">请选择</option>
                     <option v-for="(val, key) in cityData" :value="key">{{val}}</option>
                 </select>
-                <p class="error" v-if="!validate.city.state">{{validate.city.mes}}</p>
+                <p class="error" v-if="error.city">{{error.city[0].message}}</p>
             </div>
 
             <div class="formRow">
                 <span>地区</span>
-                <select v-model="districtId">
+                <select v-model="formData.district">
                     <option value="">请选择</option>
                     <option v-for="(val, key) in districtData" :value="key">{{val}}</option>
                 </select>
@@ -49,55 +49,46 @@
 </template>
 
 <script>
-    import vHeader from "../../components/header.vue";
     import addressData from "../../common/js/placeData";
-    import axios from "axios";
-    import api from "../../common/js/api";
-    import {mapMutations} from "vuex";
+    import AsyncValidator from "async-validator";
+
+    let rules = {
+        username: [{required: true, message: "请输入姓名"}],
+        phone: [
+            {required: true, message: "请输入手机号"},
+            {pattern: /^\d{11}$/, message: "请输入正确的号码"}
+        ],
+        province: [{required: true, message: "请输入姓名"}],
+        city: [{required: true, message: "请输入姓名"}]
+    };
+    let validator = new AsyncValidator(rules);
 
     export default{
         data(){
-            let self = this;
-
             return {
-                id: self.$route.params.customer_id,
+                id: this.$route.params.customer_id, //用户id
+                provinceData: addressData["86"],    //省份数据
+                cityData: {},                       //城市数据
+                districtData: {},                   //地区数据
 
-                provinceData: addressData["86"],
-                cityData: {},
-                districtData: {},
-                username: "",
-                phone: "",
-                provinceId: "",
-                cityId: "",
-                districtId: "",
+                formData: {                         //表单数据
+                    username: "",
+                    phone: "",
+                    province: "",
+                    city: "",
+                    district: ""
+                },
 
-                validate: {
-                    username: {
-                        state: true,
-                        mes: ""
-                    },
-                    phone: {
-                        state: true,
-                        mes: ""
-                    },
-                    province: {
-                        state: true,
-                        mes: ""
-                    },
-                    city: {
-                        state: true,
-                        mes: ""
-                    }
-                }
+                error: {}                           //表单验证信息
             }
         },
 
         watch: {
             //省市区联动
-            provinceId(val){
+            "formData.province"(val){
                 this.districtData = {};
-                this.cityId = "";
-                this.districtId = "";
+                this.formData.city = "";
+                this.formData.district = "";
 
                 if (val === "") {
                     this.cityData = {};
@@ -106,8 +97,8 @@
                 }
             },
 
-            cityId(val){
-                this.districtId = "";
+            "formData.city"(val){
+                this.formData.district = "";
 
                 if (val === "") {
                     this.districtData = {};
@@ -117,129 +108,73 @@
             }
         },
 
-        components: {
-            vHeader
-        },
-
         methods: {
-            ...mapMutations(["showLoading", "hideLoading"]),
-
-            //获取用户信息
-            getData(){
+            //获取当前用户信息
+            async getData(){
                 let self = this;
 
-                axios.post(api.customerBase, {id: self.id})
-                    .then(res => {
-                        if (res.data.code === 1) {
-                            let mes = res.data.data[0];
+                //调接口
+                let res = await self.$axios.post(self.$api.customerBase, {id: self.id});
+                self.$indicator.close();
 
-                            self.username = mes.username;
-                            self.phone = mes.phone;
-                            self.provinceId = mes.province_id;
+                //处理响应信息
+                if (res.state) {
+                    let mes = res.data[0];
 
-                            setTimeout(function () {
-                                self.cityId = mes.city_id;
-
-                                setTimeout(function () {
-                                    self.districtId = mes.district_id;
-                                }, 0);
-                            }, 0);
-                        } else {
-                            console.log(res.data);
-                        }
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    })
+                    self.formData.username = mes.username;
+                    self.formData.phone = mes.phone;
+                    self.formData.province = mes.province_id;
+                    self.formData.city = await mes.city_id;
+                    self.formData.district = await mes.district_id;
+                } else {
+                    self.$toast("修改失败！");
+                }
             },
 
-            //提交表单
-            submit(){
+            async submit(){
                 let self = this;
 
-                if (!self.validation()) {
+                //表单校验
+                let fields = await new Promise((resolve, reject) => {
+                    validator.validate(self.formData, function (error, fields) {
+                        resolve(fields);
+                    });
+                });
+                if (fields !== null) {
+                    self.error = fields;
                     return;
                 }
 
-                let provinceName = addressData["86"][self.provinceId];
-                let cityName = addressData[self.provinceId][self.cityId];
-                let districtName = addressData[self.cityId][self.districtId];
+                //获取省市区名称
+                let provinceName = addressData["86"][self.formData.province];
+                let cityName = addressData[self.formData.province][self.formData.city];
+                let districtName = addressData[self.formData.city][self.formData.district];
 
+                //整理提交数据
                 let postData = {
                     id: self.id,
-                    username: self.username,
-                    phone: self.phone,
-                    province_id: self.provinceId,
+                    username: self.formData.username,
+                    phone: self.formData.phone,
+                    province_id: self.formData.province,
                     province: provinceName,
-                    city_id: self.cityId,
+                    city_id: self.formData.city,
                     city: cityName,
-                    district_id: self.districtId,
+                    district_id: self.formData.district,
                     district: districtName
                 };
 
-                self.showLoading();
+                //调接口
+                self.$indicator.open();
+                let res = await self.$axios.post(self.$api.customerUpdate, postData);
+                self.$indicator.close();
 
-                axios
-                    .post(api.customerUpdate, postData)
-                    .then(res => {
-                        self.hideLoading();
-
-                        if (res.data.code === 1) {
-                            alert("保存成功！");
-                            self.$router.go(-1);
-                        } else {
-                            alert("操作失败");
-                        }
-                    })
-                    .catch(err => {
-                        self.hideLoading();
-                        console.log(err);
-                        alert("操作失败");
-                    });
-            },
-
-            //表单验证
-            validation(){
-                let self = this;
-                let canSubmit = true;
-
-                if (self.username === "") {
-                    self.validate.username.state = false;
-                    self.validate.username.mes = "请输入客户姓名";
-                    canSubmit = false;
+                //处理响应信息
+                if (res.state) {
+                    self.$toast("保存成功");
+                    self.$router.go(-1);
                 } else {
-                    self.validate.username.state = true;
-                    self.validate.username.mes = "";
+                    self.$toast("操作失败");
                 }
-
-                if (!/^\d{11}$/.test(self.phone)) {
-                    self.validate.phone.state = false;
-                    self.validate.phone.mes = "请输入正确的手机号码";
-                    canSubmit = false;
-                } else {
-                    self.validate.phone.state = true;
-                    self.validate.phone.mes = "";
-                }
-
-                if (self.provinceId === "") {
-                    self.validate.province.state = false;
-                    self.validate.province.mes = "请选择省份";
-                    canSubmit = false;
-                } else {
-                    self.validate.province.state = true;
-                    self.validate.province.mes = "";
-                }
-
-                if (self.cityId === "") {
-                    self.validate.city.state = false;
-                    self.validate.city.mes = "请选择城市";
-                    canSubmit = false;
-                } else {
-                    self.validate.city.state = true;
-                    self.validate.city.mes = "";
-                }
-
-                return canSubmit;
             }
         },
 
@@ -250,82 +185,5 @@
 </script>
 
 <style lang="less">
-    .customerAdd {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        box-sizing: border-box;
-        padding-top: 0.8rem;
-        background-color: #eee;
-
-        .form {
-            background-color: #fff;
-            padding: 0 0.3rem;
-
-            .formRow {
-                border-bottom: 1px solid #eee;
-                position: relative;
-                line-height: 1rem;
-                padding-left: 1.5rem;
-
-                span {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                }
-
-                b {
-                    color: #f00;
-                    line-height: 1rem;
-                }
-
-                input, select {
-                    background: none;
-                    border: none;
-                    font-size: 0.3rem;
-                    color: #999;
-                    display: block;
-                    width: 100%;
-                    height: 1rem;
-                    outline: none;
-                }
-
-                .error {
-                    color: #f00;
-                    font-size: 0.2rem;
-                    line-height: 0.3rem;
-                }
-            }
-
-            .formRow:last-child {
-                border: none;
-            }
-        }
-
-        .tip {
-            padding: 0 0.3rem;
-            font-size: 0.24rem;
-            color: #999;
-        }
-
-        .btn {
-            width: 90%;
-            display: block;
-            margin: 0.5rem auto;
-            height: 0.8rem;
-            line-height: 0.8rem;
-            text-align: center;
-            border-radius: 0.2rem;
-        }
-
-        .save {
-            color: #fff;
-            background-color: #31bfcf;
-        }
-
-        .cancel {
-            background-color: #fff;
-        }
-    }
+    @import "./less/customerEdit";
 </style>

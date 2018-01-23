@@ -1,6 +1,6 @@
 <template>
     <div class="orderDetail">
-        <v-header title="订单详情"></v-header>
+        <v-header>订单详情</v-header>
 
         <div class="orderMes">
             <div class="orderTime">
@@ -34,22 +34,14 @@
         <div class="footerBar">
             <span>共 {{totalNum}} 件商品</span>
 
-            <a href="javascript:void(0)" class="finishBtn" @click="dialogShow = true" v-if="order.delivery_state == 0">完成送货</a>
+            <a href="javascript:void(0)" class="finishBtn" @click="finishOrder"
+               v-if="order.delivery_state == 0">完成送货</a>
             <a href="javascript:void(0)" class="finishBtn" v-if="order.delivery_state == 1">已完成</a>
         </div>
-
-        <v-dialog :show.sync="dialogShow" :options="dialogOptions" @ok="finishOrder"></v-dialog>
     </div>
 </template>
 
 <script>
-    import axios from "axios";
-    import api from "../../common/js/api";
-    import {mapMutations} from "vuex";
-
-    import vHeader from "../../components/header.vue";
-    import vDialog from "../../components/dialog.vue";
-
     export default{
         data(){
             let self = this;
@@ -57,14 +49,7 @@
             return {
                 id: self.$route.params.order_id,    //订单id
                 order: {},                          //订单信息
-                goods: [],                          //商品信息
-
-                dialogShow: false,                   //弹框的状态
-                dialogOptions: {
-                    title: "提示",
-                    content: "是否完成这个订单？",
-                    dialog: true
-                }
+                goods: []                           //商品信息
             }
         },
 
@@ -73,6 +58,7 @@
             totalNum(){
                 let total = 0;
 
+                //遍历商品列表获取总数
                 this.goods.forEach(item => {
                     total += item.num;
                 });
@@ -81,55 +67,50 @@
             }
         },
 
-        components: {
-            vHeader,
-            vDialog
-        },
-
         methods: {
-            ...mapMutations(["showLoading", "hideLoading"]),
-
             //获取订单信息
-            getData(){
+            async getData(){
                 let self = this;
 
-                axios.post(api.orderDetail, {order_id: self.id})
-                    .then(res => {
-                        if (res.data.code === 1) {
-                            console.log(res.data.data);
-                            self.order = res.data.data.order[0];
-                            self.goods = res.data.data.goods
-                        } else {
-                            console.log(res.data);
-                        }
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    })
+                //调接口获取数据
+                let res = await self.$axios.post(self.$api.orderDetail, {order_id: self.id});
+                self.$indicator.close();
+
+                //处理响应信息
+                if (res.state) {
+                    self.order = res.data.order[0];
+                    self.goods = res.data.goods
+                } else {
+                    self.$toast("获取订单信息失败");
+                }
             },
 
-            //删除订单
-            finishOrder(){
+            //完成订单
+            async finishOrder(){
                 let self = this;
 
-                self.showLoading();
+                //弹框确认
+                let action = await self.$messagebox({
+                    title: "提示",
+                    message: "是否完成这个订单？",
+                    showCancelButton: true
+                });
+                if (action === "cancel") {
+                    return;
+                }
 
-                axios.post(api.deliveryFinish, {order_id: self.id})
-                    .then(res => {
-                        self.hideLoading();
+                //调接口提交
+                self.$indicator.open();
+                let res = await self.$axios.post(self.$api.deliveryFinish, {order_id: self.id});
+                self.$indicator.close();
 
-                        if (res.data.code === 1) {
-                            alert("提交成功");
-                            self.$router.go(-1);
-                        } else {
-                            alert("操作失败");
-                        }
-                    })
-                    .catch(err => {
-                        self.hideLoading();
-                        console.log(err);
-                        alert("操作失败");
-                    })
+                //处理响应信息
+                if (res.state) {
+                    self.$toast("提交成功");
+                    self.$router.go(-1);
+                } else {
+                    self.$toast("操作失败！");
+                }
             }
         },
 
@@ -140,112 +121,5 @@
 </script>
 
 <style lang="less">
-    @import "../../common/less/common";
-
-    .orderDetail {
-        padding: 0.8rem 0 3.5rem 0;
-
-        .orderMes {
-            padding: 0.2rem 0.3rem;
-            border-bottom: 0.2rem solid #f3f3f3;
-
-            .orderTime {
-                font-size: 0.24rem;
-                line-height: 0.5rem;
-                border-bottom: 1px solid #eee;
-                color: #999;
-
-                .deliveryState {
-                    float: right;
-                    color: #f00;
-                }
-            }
-
-            .userName {
-                line-height: 0.8rem;
-
-                .phone {
-                    float: right;
-                }
-            }
-
-            .address {
-                font-size: 0.24rem;
-                color: #999;
-                color: #999;
-            }
-        }
-
-        .goodsList {
-            h3 {
-                height: 0.8rem;
-                line-height: 0.8rem;
-                font-size: 0.3rem;
-                font-weight: normal;
-                color: #31bfcf;
-                padding-left: 0.3rem;
-
-                .fa-angle-right {
-                    color: #ccc;
-                    font-size: 0.5rem;
-                    vertical-align: middle;
-                }
-            }
-
-            li {
-                border-bottom: 2px solid #fff;
-                height: 1rem;
-                line-height: 1rem;
-                position: relative;
-                padding-left: 1.3rem;
-                background-color: #f5f5f5;
-
-                .goodsName {
-                    font-size: 0.4rem;
-                    position: absolute;
-                    height: 1rem;
-                    line-height: 1rem;
-                    width: 1rem;
-                    top: 0;
-                    left: 0.3rem;
-                }
-
-                .goodsType, .goodsColor {
-                    color: #999;
-                    font-size: 0.24rem;
-                }
-
-                .goodsNum {
-                    position: absolute;
-                    right: 0.2rem;
-                }
-            }
-        }
-
-        .footerBar {
-            position: fixed;
-            width: 100%;
-            height: 0.8rem;
-            background-color: #fff;
-            bottom: 0;
-            color: #31bfcf;
-            border-top: 1px solid #31bfcf;
-            line-height: 0.8rem;
-            box-sizing: border-box;
-            padding: 0 0.3rem;
-            font-size: 0.24rem;
-
-            .finishBtn {
-                position: absolute;
-                width: 2rem;
-                height: 100%;
-                top: 0;
-                right: 0;
-                background-color: #31bfcf;
-                color: #fff;
-                text-align: center;
-                font-size: 0.3rem;
-            }
-        }
-    }
+    @import "./less/deliveryDetail";
 </style>

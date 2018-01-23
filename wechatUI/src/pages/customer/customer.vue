@@ -40,6 +40,7 @@
         computed: {
             ...mapState(["customer"]),
 
+            //过滤列表
             customerShows(){
                 let self = this;
 

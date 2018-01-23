@@ -5,8 +5,11 @@ import api from "./common/js/api";
 import "mint-ui/lib/style.css";
 import router from "./router/router";
 import store from "./store/store";
+import vHeader from "./components/header.vue";
 
 import app from "./app.vue";
+
+Vue.component("v-header", vHeader);
 
 Vue.use(MintUI);
 Vue.prototype.$axios = axios;
