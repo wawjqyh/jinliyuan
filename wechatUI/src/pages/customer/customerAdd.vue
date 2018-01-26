@@ -58,8 +58,8 @@
             {required: true, message: "请输入手机号"},
             {pattern: /^\d{11}$/, message: "请输入正确的号码"}
         ],
-        province: [{required: true, message: "请输入姓名"}],
-        city: [{required: true, message: "请输入姓名"}]
+        province: [{required: true, message: "请选择省份"}],
+        city: [{required: true, message: "请选择城市"}]
     };
     let validator = new AsyncValidator(rules);
 

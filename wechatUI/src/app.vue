@@ -15,8 +15,6 @@
         },
 
         mounted(){
-            this.getCustomer({});           //获取客户列表
-            this.getGoods({});              //获取商品列表
             this.getCategory({});           //获取商品类别列表
         }
     }

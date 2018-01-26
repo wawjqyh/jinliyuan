@@ -59,27 +59,23 @@
 
         .subNumBtn, .addNum {
             display: inline-block;
-            vertical-align: bottom;
-            width: 0.3rem;
-            height: 0.3rem;
-            line-height: 0.3rem;
+            width: 0.4rem;
+            height: 0.4rem;
+            line-height: 0.4rem;
             text-align: center;
             font-size: 0.4rem;
             font-weight: bold;
-            border: 0.05rem solid #00a0dc;
             border-radius: 50%;
             position: absolute;
+            color: #fff;
+            background-color: #00a0dc;
         }
 
         .subNumBtn {
-            color: #00a0dc;
-            background-color: #fff;
             left: 0;
         }
 
         .addNum {
-            color: #fff;
-            background-color: #00a0dc;
             right: 0;
         }
 
