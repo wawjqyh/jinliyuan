@@ -1,8 +1,8 @@
 'use strict';
 
 module.exports = {
-    mysql: {
+    sequelize: {
         enable: true,
-        package: 'egg-mysql'
+        package: 'egg-sequelize'
     }
 };

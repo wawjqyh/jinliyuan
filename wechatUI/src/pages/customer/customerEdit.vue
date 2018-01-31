@@ -114,12 +114,12 @@
                 let self = this;
 
                 //调接口
-                let res = await self.$axios.post(self.$api.customerBase, {id: self.id});
+                let res = await self.$axios.get(self.$api.customer + "/" + self.id);
                 self.$indicator.close();
 
                 //处理响应信息
                 if (res.state) {
-                    let mes = res.data[0];
+                    let mes = res.data;
 
                     self.formData.username = mes.username;
                     self.formData.phone = mes.phone;
@@ -152,7 +152,6 @@
 
                 //整理提交数据
                 let postData = {
-                    id: self.id,
                     username: self.formData.username,
                     phone: self.formData.phone,
                     province_id: self.formData.province,
@@ -165,7 +164,7 @@
 
                 //调接口
                 self.$indicator.open();
-                let res = await self.$axios.post(self.$api.customerUpdate, postData);
+                let res = await self.$axios.patch(self.$api.customer + "/" + self.id, postData);
                 self.$indicator.close();
 
                 //处理响应信息

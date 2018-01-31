@@ -5,6 +5,12 @@ let main = {};
 
 /**
  * @desc 获取客户列表
+ * @sql
+ * SELECT *
+ * FROM customer
+ * WHERE state != 0 AND id = 1
+ * LIMIT 0,10
+ * ORDER BY username ASC
  */
 main.list = async function (ctx, next) {
     try {
@@ -27,6 +33,9 @@ main.list = async function (ctx, next) {
 
 /**
  * @desc 新增客户
+ * @SQL
+ * INSERT INTO customer (username,phone,province_id,province,city_id,city,district_id,district)
+ * VALUES (val1,val2,...)
  */
 main.insert = async function (ctx, next) {
     try {
@@ -47,7 +56,6 @@ main.insert = async function (ctx, next) {
             mes: "操作失败"
         }
     }
-
 };
 
 /**
@@ -85,6 +93,8 @@ main.detail = async function (ctx, next) {
 
 /**
  * @desc 删除客户，即把客户的状态改为0
+ * @sql
+ * UPDATE customer SET state = 0 WHERE id = 2
  */
 main.delete = async function (ctx, next) {
     try {
@@ -132,6 +142,10 @@ main.baseMes = async function (ctx, next) {
 
 /**
  * @desc 修改用户信息
+ * @SQL
+ * UPDATE customer
+ * SET state = val, username = "val", ...
+ * WHERE id = 3
  */
 main.update = async function (ctx, next) {
     try {

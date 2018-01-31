@@ -143,7 +143,7 @@
 
                 //提交数据
                 self.$indicator.open();
-                let res = await self.$axios.post(self.$api.customerInsert, postData);
+                let res = await self.$axios.post(self.$api.customer, postData);
                 self.$indicator.close();
 
                 //判断响应信息

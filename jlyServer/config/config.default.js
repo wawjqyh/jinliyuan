@@ -9,17 +9,24 @@ module.exports = appInfo => {
     // add your config here
     config.middleware = [];
 
-    config.mysql = {
-        client: {
-            host: 'localhost',
-            port: '3306',
-            user: 'root',
-            password: '',
-            database: 'jinliyuan',
-            timezone: "08:00"
+    config.sequelize = {
+        dialect: 'mysql',
+        host: 'localhost',
+        port: '3306',
+        database: 'jinliyuan',
+        username: 'root',
+        password: '',
+        operatorsAliases: false,
+        timezone: "+08:00"
+    };
+
+    config.security = {
+        xframe: {
+            enable: false,
         },
-        app: true,
-        agent: false
+        csrf: {
+            enable: false,
+        }
     };
 
     return config;

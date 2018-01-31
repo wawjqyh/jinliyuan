@@ -26,8 +26,6 @@
 </template>
 
 <script>
-    import axios from "axios";
-    import api from "../../common/js/api";
     import {mapState, mapActions} from "vuex";
 
     export default {

@@ -5,10 +5,10 @@ import {Toast} from "mint-ui";
 export default {
     //获取客户列表
     async getCustomer({commit}){
-        let res = await axios.get(api.customerList);
+        let res = await axios.get(api.customer);
 
         if (res.state) {
-            commit("initCustomer", res.data);
+            commit("initCustomer", res.data.rows);
         } else {
             Toast("获取客户列表失败");
         }
