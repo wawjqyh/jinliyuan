@@ -10,7 +10,7 @@
         <ul class="goodsList">
             <li v-for="item in goodsShows">
                 <span class="goodsName">{{item.name}}</span>
-                <span class="goodsType">{{item.category}}</span>
+                <span class="goodsType">{{item.category.category}}</span>
                 <span class="goodsColor">{{item.color}}</span>
                 <span class="goodsNum">库存:{{item.num}}</span>
             </li>

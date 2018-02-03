@@ -4,6 +4,9 @@ export default {
     index: baseUrl + "/index",
 
     customer: baseUrl + "/customer",
+    category: baseUrl + "/category",
+    goods: baseUrl + "/goods",
+
     customerList: baseUrl + "/customer",
     customerInsert: baseUrl + "/customer/insert",
     customerDetail: baseUrl + "/customer/detail",

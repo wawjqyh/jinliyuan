@@ -16,10 +16,10 @@ export default {
 
     //获取商品列表
     async getGoods({commit}){
-        let res = await axios.get(api.goodsList);
+        let res = await axios.get(api.goods);
 
         if (res.state) {
-            commit("initGoods", res.data);
+            commit("initGoods", res.data.rows);
         } else {
             Toast("获取商品列表失败");
         }
@@ -27,7 +27,7 @@ export default {
 
     //获取商品类别列表
     async getCategory({commit}){
-        let res = await axios.get(api.goodsCategory);
+        let res = await axios.get(api.category);
 
         if (res.state) {
             commit("initCategory", res.data);
