@@ -90,15 +90,15 @@
             async loadData(){
                 let self = this;
 
-                let res = await self.$axios.get(self.$api.goodsList);
+                let res = await self.$axios.get(self.$api.goods);
 
                 if (res.state) {
-                    res.data.forEach(item => {
+                    res.data.rows.forEach(item => {
                         item.sNum = 0;
                         item.price = "";
                     });
 
-                    self.goodsList = res.data;
+                    self.goodsList = res.data.rows;
                 } else {
                     self.$toast("获取商品失败！");
                 }
