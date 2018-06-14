@@ -1,5 +1,5 @@
 {
-    "name": "jlyServer",
+    "name": "server_egg",
     "version": "1.0.0",
     "description": "server egg",
     "private": true,
