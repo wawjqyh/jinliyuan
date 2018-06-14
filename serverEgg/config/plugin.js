@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 module.exports = {
-    sequelize: {
-        enable: true,
-        package: 'egg-sequelize'
-    }
+  sequelize: {
+    enable: true,
+    package: "egg-sequelize"
+  }
 };
